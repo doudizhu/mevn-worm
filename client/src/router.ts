@@ -28,6 +28,32 @@ export const routes = [
       // icon: 'fa fa-home'
     },
   },
+  {
+    path: '/srcManager',
+    meta: {
+      title: '源站管理',
+    },
+    component: () => import('./components/layout/Index.vue'), // 布局组件
+    children: [
+      {
+        path: 'setting',
+        name: 'srcManagerSetting',
+        meta: {
+          title: '源站配置',
+        },
+        component: () => import('./views/srcManager/Setting.vue'),
+      },
+      {
+        path: 'rulesConfig',
+        name: 'srcManagerRulesConfig',
+        meta: {
+          title: '抓取规则配置',
+        },
+        component: () => import('./views/srcManager/RulesConfig.vue'),
+      },
+    ],
+  },
+
 ] 
 
 export default new Router({
