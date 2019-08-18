@@ -1,5 +1,5 @@
 <template lang="pug">
-.view home
+.view dashboard
 </template>
 
 <script lang="ts">
