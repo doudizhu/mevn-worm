@@ -4,10 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "concurrently \"node server.js\" \"npm run client-install\"",
     "client-install": "npm install --prefix client",
     "client": "npm start --prefix client",
-    "start": "node server.js",
     "server": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
