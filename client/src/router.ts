@@ -21,19 +21,26 @@ export const routes = [
   {
     path: '/',
     hidden: true,
-    name: 'dashboard',
-    component: ()=> import('@/views/Dashboard.vue'),
-    meta: {
-      title: '仪表盘',
-      // icon: 'fa fa-home'
-    },
+    component: () => import('./components/layout/Index.vue'), // 布局组件
+    redirect: '/dashboard',
+    children: [
+      {
+        path: '/dashboard',
+        name: 'dashboard',
+        meta: {
+          title: '仪表盘',
+        },
+        component: () => import('./views/Dashboard.vue'),
+      },
+    ]
   },
   {
     path: '/srcManager',
+    hidden: true,
+    component: () => import('./components/layout/Index.vue'), // 布局组件
     meta: {
       title: '源站管理',
     },
-    component: () => import('./components/layout/Index.vue'), // 布局组件
     children: [
       {
         path: 'setting',
