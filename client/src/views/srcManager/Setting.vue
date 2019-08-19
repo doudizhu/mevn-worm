@@ -10,7 +10,11 @@
     :prop='propTable'
     @emit='emitTable'
   )
-  Pagination
+  //- 分页模块
+  Pagination(
+    :prop='propPagination'
+    @emit='emitPagination'
+  )
 </template>
 
 <script lang="ts">
@@ -33,6 +37,16 @@ export default class ViewComponent extends Vue {
       collected__date__lte: '',
     }
   }
+  //- 分页模块
+  propPagination = {
+    paginations: {
+      page_index: 1, // 当前位于哪页
+      total: 0, // 总数
+      page_size: 5, // 一页显示多少条
+      page_sizes: [5,10,15,20], // 每页显示多少条
+      layout:'total,sizes,prev,pager,next,jumper', // 翻页属性
+    }
+  }
 
 
   /* lifecycle hook */
@@ -42,13 +56,18 @@ export default class ViewComponent extends Vue {
   }
 
   /* method */
+  // 监听:表格操作curd
   emitTable(response:any){
 
   }
   // 监听：验证筛选模块，点击“查询”按钮
   emitFilterItem(response:any){
     const data = response.data;
-    console.log('dataddd',data)
+    this.getSourceInfo(data);
+  }
+  // 监听：分页操作
+  emitPagination(response:any){
+    const data = response.data;
     this.getSourceInfo(data);
   }
 
