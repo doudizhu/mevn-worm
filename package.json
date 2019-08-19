@@ -4,12 +4,12 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"node server.js\" \"npm run build --prefix client\"",
     "devProd": "export NODE_ENV=production PORT=5000 DEV_PROD=devProd && concurrently \"nodemon server_devProd.js\" \"npm run build --prefix client\"",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client-install": "npm install --prefix client",
     "client": "npm start --prefix client",
     "server": "nodemon server.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "lp",
@@ -18,9 +18,5 @@
     "concurrently": "^4.1.2",
     "express": "^4.17.1"
   },
-  "devDependencies": {
-    "pug": "^2.0.4",
-    "pug-loader": "^2.4.0",
-    "pug-plain-loader": "^1.0.0"
-  }
+  "devDependencies": {}
 }
