@@ -1,9 +1,9 @@
 import Table from "./Table.vue";
-import Filter from "./Filter.vue";
+import FilterItem from "./FilterItem.vue";
 import Pagination from "./Pagination.vue";
 
 export {
   Table,
-  Filter,
+  FilterItem,
   Pagination,
 }

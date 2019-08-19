@@ -1,5 +1,5 @@
 <template lang="pug">
-.view
+.view.layout
   .aside
     Sidebar
   .container
@@ -22,7 +22,8 @@ export default class ViewComponent extends Vue {
 </script>
 
 <style lang="stylus" scoped>
-.view
+// .view 此处不用view防止下层的.view被router-view合并上来也被选中
+.layout
   display:flex;
   &>.container
     flex 1

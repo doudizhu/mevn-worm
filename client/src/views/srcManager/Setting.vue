@@ -1,6 +1,10 @@
 <template lang="pug">
 .view
-  Filter
+  //- 筛选模块
+  FilterItem(
+    :prop='propFilterItem'
+    @emit='emitFilterItem'
+  )
   //- 表格模块
   Table(
     :prop='propTable'
@@ -11,15 +15,23 @@
 
 <script lang="ts">
 import {Component,Vue} from 'vue-property-decorator'
-import {Table,Filter,Pagination} from '@/components/views/srcManager/setting/index.ts'
+import {Table,FilterItem,Pagination} from '@/components/views/srcManager/setting/index.ts'
 @Component({
-  components:{Table,Filter,Pagination}
+  components:{Table,FilterItem,Pagination}
 })
 export default class ViewComponent extends Vue {
   /* data */
   // 表格模块
   propTable = {
     tableData: [],
+  }
+  //- 筛选模块
+  propFilterItem = {
+    ruleForm: {
+      name: '',
+      collected__date__gte: '',
+      collected__date__lte: '',
+    }
   }
 
 
@@ -32,6 +44,12 @@ export default class ViewComponent extends Vue {
   /* method */
   emitTable(response:any){
 
+  }
+  // 监听：验证筛选模块，点击“查询”按钮
+  emitFilterItem(response:any){
+    const data = response.data;
+    console.log('dataddd',data)
+    this.getSourceInfo(data);
   }
 
   async getSourceInfo(data={}){
