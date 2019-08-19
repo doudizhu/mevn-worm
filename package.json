@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"node server.js\" \"npm run client-install\"",
+    "start": "concurrently \"node server.js\" \"npm run build --prefix client\"",
+    "devProd": "export NODE_ENV=production PORT=5000 DEV_PROD=devProd && concurrently \"nodemon server_devProd.js\" \"npm run build --prefix client\"",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client-install": "npm install --prefix client",
     "client": "npm start --prefix client",
     "server": "nodemon server.js",
