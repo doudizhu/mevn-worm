@@ -52,37 +52,57 @@ export default class ViewComponent extends Vue {
   /* lifecycle hook */
   created(){
     // 初始化页面数据
-    this.getSourceInfo() // 获取来源数据
+    this.apiSourceInfo() // 获取来源数据
   }
 
   /* method */
   // 监听:表格操作curd
   emitTable(response:any){
-
+    if(response.method == 'delete'){
+      this.apiSourceInfo({
+        id:response.id,
+        method:response.method
+      }); 
+    }
   }
   // 监听：验证筛选模块，点击“查询”按钮
   emitFilterItem(response:any){
     const data = response.data;
-    this.getSourceInfo(data);
+    this.apiSourceInfo({
+      data
+    });
   }
   // 监听：分页操作
   emitPagination(response:any){
     const data = response.data;
-    this.getSourceInfo(data);
+    this.apiSourceInfo({
+      data
+    });
   }
 
-  async getSourceInfo(data={}){
+  async apiSourceInfo(conf:any={}){
+    const {
+      data={},
+      method='get',
+      id=''
+    } = conf
+
     const response = await this.$request({
       // url: 'http://goodhope-spider-manage.herokuapp.com/api/extend/source-info/',
-      url: 'http://localhost:5000/api/sourceInfos',
+      url: 'http://localhost:5000/api/sourceInfos/'+id,
       data,
-      method: 'get'
+      method,
     })
 
     if(response.status >= 200 && response.status < 300){
       const data = response.data
       // console.log('data', data)
-      this.propTable.tableData = data.results
+      if(method=='get'){ // 查询
+        this.propTable.tableData = data.results
+      }
+      else if(method=='delete'){
+        this.propTable.tableData.splice(response.index,1);
+      }
     }
   }
 

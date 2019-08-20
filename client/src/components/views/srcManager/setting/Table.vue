@@ -49,11 +49,10 @@
       label='最后采集时间'
       align='center'
     )
-    el-table-column(label='操作' align='center' fixed='right' width='240')
+    el-table-column(label='操作' align='center' fixed='right' width='180')
       template(slot-scope='scope')
-        el-button(@click='haddleSave(scope.$index, scope.row)' size='small' type='warning' icon='save') 保存
-        el-button(@click='haddleEdit(scope.$index, scope.row)' size='small' type='warning' icon='edit') 编辑
-        el-button(@click='haddleDelete(scope.$index, scope.row)' size='small' type='danger' icon='delete') 删除
+        el-button(@click='handleEdit(scope.$index, scope.row)' size='small' type='warning' icon='edit') 编辑
+        el-button(@click='handleDelete(scope.$index, scope.row)' size='small' type='danger' icon='delete') 删除
 </template>
 
 <script lang="ts">
@@ -64,5 +63,36 @@ import {Component,Vue,Prop} from 'vue-property-decorator'
 export default class ViewComponent extends Vue {
   /* prop */
   @Prop() prop!: any; // 父组件传值
+
+  /* method */
+  handleDelete(index:number,row:any){
+    console.log('row:',row)
+    this.emit({ // 发射子组件参数
+      /* 请求返回的数据 */
+      
+      /* 其他控制字段 */
+      id:row._id,
+      method:'delete',
+    })
+
+    // console.log(row._id);
+    // (this as any).$axios
+    //   .delete(`/api/profiles/delete/${row._id}`)
+    //   .then((res:any)=>{
+    //     this.$message({
+    //       message:res.data.msg,
+    //       type: 'success'
+    //     })
+    //   })
+
+    // this.tableData.splice(index,1);
+  }
+  /* 向父组件发射值 */
+  emit(response: object) {
+    this.$emit(
+      'emit',
+      response // 发射子组件参数
+    )
+  }
 }
 </script>

@@ -73,7 +73,7 @@ router.get( // 全部
         if(!result){
           return res.status(404).json('没有任何内容')
         }
-        console.log('result:',result)
+        // console.log('result:',result)
 
         const data = {
           results: result
