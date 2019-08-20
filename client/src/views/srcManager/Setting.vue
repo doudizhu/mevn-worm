@@ -73,14 +73,15 @@ export default class ViewComponent extends Vue {
 
   async getSourceInfo(data={}){
     const response = await this.$request({
-      url: 'http://goodhope-spider-manage.herokuapp.com/api/extend/source-info/',
+      // url: 'http://goodhope-spider-manage.herokuapp.com/api/extend/source-info/',
+      url: 'http://localhost:5000/api/sourceInfos',
       data,
       method: 'get'
     })
 
     if(response.status >= 200 && response.status < 300){
       const data = response.data
-      console.log('data', data)
+      // console.log('data', data)
       this.propTable.tableData = data.results
     }
   }
