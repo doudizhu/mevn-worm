@@ -1,6 +1,7 @@
 import axios, {AxiosResponse,AxiosRequestConfig} from 'axios'
 import {Message} from 'element-ui'
 import router from '@/router';
+import store from '@/store'
 
 /**
  * http请求工具类
@@ -115,7 +116,7 @@ export default function request(options:any) {
 
   return (axios as any)[method](
     // url
-    url,
+    url || store.state.domainApi + api,
     // param
     data
 )

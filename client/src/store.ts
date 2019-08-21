@@ -6,7 +6,14 @@ Vue.use(Vuex)
 
 // 单独定义初始值模板
 const stateTpl = {
-  routes:[]
+  routes:[],
+  /**
+   * 本地node
+   * http://localhost:5000 
+   * 线上python
+   * http://goodhope-spider-manage.herokuapp.com/api/extend
+   */
+  domainApi:'http://localhost:5000/api',
 }
 
 export default new Vuex.Store({
