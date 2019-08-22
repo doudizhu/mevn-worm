@@ -73,12 +73,22 @@ router.get( // 全部
         if(!result){
           return res.status(404).json('没有任何内容')
         }
-        // console.log('result:',result)
 
-        const data = {
-          results: result
+        // 模糊搜索
+        if(req.query.name) {
+          const name = req.query.name
+          const data = result.filter((item)=>item.name.indexOf(name) >= 0)
+          res.json({
+            result:data.map(item=>item.name)
+          })
         }
-        res.json(data)
+        // 全部返回
+        else { 
+          const data = {
+            result
+          }
+          res.json(data)
+        }
       })
       .catch(err=>res.status(404).json(err))
   }

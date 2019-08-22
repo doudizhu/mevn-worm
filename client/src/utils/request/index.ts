@@ -102,7 +102,7 @@ export default function request(options:any) {
     // api 请求方式
     api,
     params,
-    method = 'post',
+    method = 'get',
 
     // axios 原生请求方式
     callback, // 直接回调方法。非async模式
@@ -118,6 +118,6 @@ export default function request(options:any) {
     // url
     url || store.state.domainApi + api,
     // param
-    data
+    method == 'get' ? {params:data} : data
 )
 }

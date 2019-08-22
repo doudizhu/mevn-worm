@@ -35,7 +35,12 @@ export default class ViewComponent extends Vue {
   };
 
   /* data */
-  ruleForm = {}
+  ruleForm = {
+    name:'',
+    collected__date__gte:'',
+    collected__date__lte:'',
+  }
+
   debounceSearchName = function () {}
 
   /* lifecycle hook */
@@ -44,8 +49,16 @@ export default class ViewComponent extends Vue {
   }
 
   /* method */
-  searchName(){
-    console.log('watch start')
+  async searchName(){
+    const response = await this.$request({
+      api:'/sourceInfos/',
+      data:{
+        name:this.ruleForm.name,
+      },
+      method:'get',
+    })
+
+    console.log('searchName data:',response.data)
   }
   submitForm(formName: string) { // 表单提交校验
     // (this.$refs[formName] as any).validate(

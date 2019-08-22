@@ -123,7 +123,7 @@ export default class ViewComponent extends Vue {
     if(response.status >= 200 && response.status < 300){
       const data = response.data
       if(method=='get'){ // 查询
-        this.propTable.tableData = data.results
+        this.propTable.tableData = data.result
       }
       else if(method=='delete'){ // 删除
         this.propTable.tableData.splice(index,1);
