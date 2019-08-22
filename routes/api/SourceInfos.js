@@ -82,11 +82,19 @@ router.get( // 全部
             results:data.map(item=>{return {value:item.name}})
           })
         }
-        // 远程搜索静态方案，第一次加载全部；
+        // 远程搜索
         else if(req.query.querySearchField) {
-          res.json({
-            results:result.map(item=>{return {value:item[req.query.querySearchField]}})
-          })
+          if(req.query.querySearchValue){ // 模糊查询(适用于实时动态,大数据量的情况)
+            const name = req.query.querySearchValue
+            const data = result.filter((item)=>item.name.indexOf(name) >= 0)
+            res.json({
+              results:data.map(item=>{return {value:item.name}})
+            })
+          }else{ // 加载全部（适用于静态首次查询，,少量数据的情况）
+            res.json({
+              results:result.map(item=>{return {value:item[req.query.querySearchField]}})
+            })
+          }
         }
         // 全部返回
         else { 

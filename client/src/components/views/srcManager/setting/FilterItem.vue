@@ -54,9 +54,9 @@ export default class ViewComponent extends Vue {
   created(){
     // this.debounceSearchName = debounce(this.searchName,1000)
   }
-  mounted() {
-    this.loadAllName()
-  }
+  // mounted() {
+  //   this.loadAllName()
+  // }
 
   /* method */
   // async searchName(){
@@ -73,14 +73,27 @@ export default class ViewComponent extends Vue {
   //   }
   // }
   querySearchAsync(queryString:string, cb?:any) {
-    var restaurants = this.allName;
-    console.log('restaurants',restaurants)
-    var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+    // var queryData = this.allName;
+    // var results = queryString ? queryData.filter(this.createStateFilter(queryString)) : queryData;
 
-    console.log('results:',results)
     clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      cb(results);
+    this.timeout = setTimeout(async () => {
+      // cb(results);
+      const response = await this.$request({
+        api:'/sourceInfos/',
+        data:{
+          querySearchField:'name',
+          querySearchValue:this.ruleForm.name,
+        },
+        method:'get',
+      })
+
+      if(response.status >= 200 && response.status < 400){
+        this.allName = response.data.results
+        const queryData = this.allName;
+        const results = queryString ? queryData.filter(this.createStateFilter(queryString)) : queryData;
+        cb(results);
+      }
     }, 1000 * Math.random());
   }
   createStateFilter(queryString:string) {
