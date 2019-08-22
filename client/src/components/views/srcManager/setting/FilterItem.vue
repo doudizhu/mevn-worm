@@ -22,23 +22,31 @@
 </template>
 
 <script lang="ts">
-import {Component,Vue,Prop} from 'vue-property-decorator'
+import {debounce} from '@/utils'
+import {Component,Vue,Prop,Watch} from 'vue-property-decorator'
 @Component({
   components:{}
 })
 export default class ViewComponent extends Vue {
   /* prop */
   @Prop() prop!: any; // 父组件传值
+  @Watch('ruleForm.name',{immediate: false}) onNameChange(val: string, oldVal: string) { 
+    this.debounceSearchName()
+  };
 
   /* data */
   ruleForm = {}
+  debounceSearchName = function () {}
 
   /* lifecycle hook */
   created(){
-    this.ruleForm = this.prop.ruleForm
+    this.debounceSearchName = debounce(this.searchName,1000)
   }
 
   /* method */
+  searchName(){
+    console.log('watch start')
+  }
   submitForm(formName: string) { // 表单提交校验
     // (this.$refs[formName] as any).validate(
     //   (valid: boolean) => {
