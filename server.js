@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 
 // 引入api
-const sourceInfos = require('./routes/api/sourceInfos')
+const sourceInfos = require('./routes/api/sourceInfosTemp')
 
 const db = require('./config/keys').mongoURI
 console.log(db)
@@ -30,7 +30,7 @@ app.use((req,res,next)=>{
   res.set({
     'Access-Control-Allow-Origin':'*',
     'Access-Control-Allow-Methods':'GET,POST,PUT,PATCH,DELETE',
-    
+
     "Access-Control-Allow-Credentials": "true",
     "Access-Control-Allow-Headers": "Content-Type,Access-Token",
     "Access-Control-Expose-Headers": "*",
