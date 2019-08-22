@@ -80,7 +80,7 @@ export default class ViewComponent extends Vue {
   // 监听：验证筛选模块
   emitFilterItem(response:any){
     // 点击“查询”按钮
-    if(response.method === 'filter'){
+    if(response.method === 'get'){
       const data = response.data;
       this.apiSourceInfo({
         data

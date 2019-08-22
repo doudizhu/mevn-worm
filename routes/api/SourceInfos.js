@@ -96,6 +96,28 @@ router.get( // 全部
             })
           }
         }
+        // 筛选
+        else if(req.query.filterFields) {
+          const filterFields = JSON.parse(req.query.filterFields)
+          let items = result
+          if(filterFields.name){ 
+            const name = filterFields.name
+            items = items.filter((item)=>item.name.indexOf(name) >= 0)
+          }
+          if(filterFields.collected__date__gte){
+            const startTime = (new Date(filterFields.collected__date__gte)).getTime();
+            items = items.filter((item)=>(new Date(item.collected)).getTime() >= startTime)
+          }
+          if(filterFields.collected__date__lte){
+            const endTime = (new Date(filterFields.collected__date__lte)).getTime();
+            items = items.filter((item)=>(new Date(item.collected)).getTime() <= endTime)
+          }
+
+          const data = {
+            results:items
+          }
+          res.json(data)
+        }
         // 全部返回
         else { 
           const data = {

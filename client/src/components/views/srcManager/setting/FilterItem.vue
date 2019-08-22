@@ -1,10 +1,10 @@
 <template lang="pug">
 .view
-  el-form(:inline='true' ref='add_data' :model="ruleForm")
-    el-form-item
+  el-form(ref='ruleForm' :model="ruleForm" :rules='rules' :inline='true' )
+    el-form-item(label='源站名称')
       //- el-input(placeholder="源站名称" v-model='ruleForm.name')
       el-autocomplete(
-        placeholder="源站名称"
+        placeholder="模糊搜索"
         v-model.trim="ruleForm.name"
         :fetch-suggestions="querySearchAsync"
       )
@@ -45,6 +45,7 @@ export default class ViewComponent extends Vue {
     collected__date__gte:'',
     collected__date__lte:'',
   }
+  rules = {}
 
   // debounceSearchName = function () {}
   allName = []
@@ -117,14 +118,20 @@ export default class ViewComponent extends Vue {
   }
 
   submitForm(formName: string) { // 表单提交校验
-    // (this.$refs[formName] as any).validate(
-    //   (valid: boolean) => {
-        // if (valid) {
-          // this.executeEmit()
-        // }
-    //   }
-    // )
-    this.executeEmit()
+    (this.$refs[formName] as any).validate(
+      (valid: boolean) => {
+        if (valid) {
+          this.emit({ // 发射子组件参数
+            /* 请求返回的数据 */
+            data: {
+              filterFields:this.ruleForm
+            },
+            /* 其他控制字段 */
+            method:'get'
+          })  
+        }
+      }
+    )
   }
   handleAdd(){
     this.emit({ // 发射子组件参数
@@ -132,14 +139,6 @@ export default class ViewComponent extends Vue {
       /* 其他控制字段 */
       method:'post',
       title:'新增'
-    })
-  }
-  executeEmit() {
-    this.emit({ // 发射子组件参数
-      /* 请求返回的数据 */
-      data: this.ruleForm,
-      /* 其他控制字段 */
-      option:'filter'
     })
   }
   /* 向父组件发射值 */
