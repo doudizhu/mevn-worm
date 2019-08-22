@@ -79,13 +79,19 @@ router.get( // 全部
           const name = req.query.name
           const data = result.filter((item)=>item.name.indexOf(name) >= 0)
           res.json({
-            result:data.map(item=>item.name)
+            results:data.map(item=>{return {value:item.name}})
+          })
+        }
+        // 远程搜索静态方案，第一次加载全部；
+        else if(req.query.querySearchField) {
+          res.json({
+            results:result.map(item=>{return {value:item[req.query.querySearchField]}})
           })
         }
         // 全部返回
         else { 
           const data = {
-            result
+            results:result
           }
           res.json(data)
         }

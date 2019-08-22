@@ -2,7 +2,12 @@
 .view
   el-form(:inline='true' ref='add_data' :model="ruleForm")
     el-form-item
-      el-input(placeholder="源站名称" v-model='ruleForm.name')
+      //- el-input(placeholder="源站名称" v-model='ruleForm.name')
+      el-autocomplete(
+        placeholder="源站名称"
+        v-model.trim="ruleForm.name"
+        :fetch-suggestions="querySearchAsync"
+      )
     //- 筛选
     el-form-item(label='采集时间')
       el-date-picker(
@@ -30,9 +35,9 @@ import {Component,Vue,Prop,Watch} from 'vue-property-decorator'
 export default class ViewComponent extends Vue {
   /* prop */
   @Prop() prop!: any; // 父组件传值
-  @Watch('ruleForm.name',{immediate: false}) onNameChange(val: string, oldVal: string) { 
-    this.debounceSearchName()
-  };
+  // @Watch('ruleForm.name',{immediate: false}) onNameChange(val: string, oldVal: string) { 
+  //   this.debounceSearchName()
+  // };
 
   /* data */
   ruleForm = {
@@ -41,25 +46,63 @@ export default class ViewComponent extends Vue {
     collected__date__lte:'',
   }
 
-  debounceSearchName = function () {}
+  // debounceSearchName = function () {}
+  allName = []
+  timeout:any = null
 
   /* lifecycle hook */
   created(){
-    this.debounceSearchName = debounce(this.searchName,1000)
+    // this.debounceSearchName = debounce(this.searchName,1000)
+  }
+  mounted() {
+    this.loadAllName()
   }
 
   /* method */
-  async searchName(){
+  // async searchName(){
+  //   const response = await this.$request({
+  //     api:'/sourceInfos/',
+  //     data:{
+  //       name:this.ruleForm.name,
+  //     },
+  //     method:'get',
+  //   })
+
+  //   if(response.status >= 200 && response.status < 400){
+  //     this.querySearchName = response.data.resuluts
+  //   }
+  // }
+  querySearchAsync(queryString:string, cb?:any) {
+    var restaurants = this.allName;
+    console.log('restaurants',restaurants)
+    var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
+
+    console.log('results:',results)
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      cb(results);
+    }, 1000 * Math.random());
+  }
+  createStateFilter(queryString:string) {
+    return (state:any) => {
+      return (state.value.toString().toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+    };
+  }
+  async loadAllName(){
     const response = await this.$request({
       api:'/sourceInfos/',
       data:{
-        name:this.ruleForm.name,
+        querySearchField:'name',
       },
       method:'get',
     })
 
-    console.log('searchName data:',response.data)
+    if(response.status >= 200 && response.status < 400){
+      this.allName = response.data.results
+      console.log('this.allName:',this.allName)
+    }
   }
+
   submitForm(formName: string) { // 表单提交校验
     // (this.$refs[formName] as any).validate(
     //   (valid: boolean) => {
