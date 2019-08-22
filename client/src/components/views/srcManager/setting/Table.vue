@@ -66,26 +66,24 @@ export default class ViewComponent extends Vue {
 
   /* method */
   handleDelete(index:number,row:any){
-    console.log('row:',row)
     this.emit({ // 发射子组件参数
       /* 请求返回的数据 */
-      
+      // data:{},
       /* 其他控制字段 */
-      id:row._id,
       method:'delete',
+      index,
+      id:row._id,
     })
-
-    // console.log(row._id);
-    // (this as any).$axios
-    //   .delete(`/api/profiles/delete/${row._id}`)
-    //   .then((res:any)=>{
-    //     this.$message({
-    //       message:res.data.msg,
-    //       type: 'success'
-    //     })
-    //   })
-
-    // this.tableData.splice(index,1);
+  }
+  handleEdit(index:number,row:any){
+    this.emit({ // 发射子组件参数
+      /* 请求返回的数据 */
+      /* 其他控制字段 */
+      method:'patch',
+      title: '编辑',
+      index,
+      ruleForm:row,
+    })
   }
   /* 向父组件发射值 */
   emit(response: object) {

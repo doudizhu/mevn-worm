@@ -15,13 +15,20 @@
     :prop='propPagination'
     @emit='emitPagination'
   )
+  //- 弹窗（新增&编辑）
+  Dialog(
+    v-if="isShowDialog" :isShow.sync='isShowDialog'
+    :prop='propDialog'
+    @emit='emitDialog'
+  )
 </template>
 
 <script lang="ts">
 import {Component,Vue} from 'vue-property-decorator'
-import {Table,FilterItem,Pagination} from '@/components/views/srcManager/setting/index.ts'
+import {Table,FilterItem,Pagination,Dialog} from '@/components/views/srcManager/setting/index.ts'
+import axios from 'axios'
 @Component({
-  components:{Table,FilterItem,Pagination}
+  components:{Table,FilterItem,Pagination,Dialog}
 })
 export default class ViewComponent extends Vue {
   /* data */
@@ -47,7 +54,9 @@ export default class ViewComponent extends Vue {
       layout:'total,sizes,prev,pager,next,jumper', // 翻页属性
     }
   }
-
+  //- 弹窗
+  isShowDialog = false
+  propDialog = {}
 
   /* lifecycle hook */
   created(){
@@ -56,21 +65,32 @@ export default class ViewComponent extends Vue {
   }
 
   /* method */
-  // 监听:表格操作curd
+  // 监听:表格模块
   emitTable(response:any){
+    // 点击“删除”按钮
     if(response.method == 'delete'){
-      this.apiSourceInfo({
-        id:response.id,
-        method:response.method
-      }); 
+      this.apiSourceInfo(response); 
+    }
+    // 点击“编辑”按钮
+    if(response.method == 'patch'){
+      this.propDialog = response
+      this.isShowDialog = true  
     }
   }
-  // 监听：验证筛选模块，点击“查询”按钮
+  // 监听：验证筛选模块
   emitFilterItem(response:any){
-    const data = response.data;
-    this.apiSourceInfo({
-      data
-    });
+    // 点击“查询”按钮
+    if(response.method === 'filter'){
+      const data = response.data;
+      this.apiSourceInfo({
+        data
+      });
+    }
+    // 点击“新增”按钮
+    if(response.method === 'post'){
+      this.propDialog = response
+      this.isShowDialog = true
+    }
   }
   // 监听：分页操作
   emitPagination(response:any){
@@ -79,13 +99,18 @@ export default class ViewComponent extends Vue {
       data
     });
   }
+  // 监听：弹窗（新增&编辑）
+  emitDialog(response:any){
+    this.apiSourceInfo(response)
+  }
 
   async apiSourceInfo(conf:any={}){
     const {
       data={},
       method='get',
-      id=''
+      index=0,
     } = conf
+    const id = data._id || conf.id || ''
 
     const response = await this.$request({
       // url: 'http://goodhope-spider-manage.herokuapp.com/api/extend/source-info/',
@@ -97,12 +122,17 @@ export default class ViewComponent extends Vue {
 
     if(response.status >= 200 && response.status < 300){
       const data = response.data
-      // console.log('data', data)
       if(method=='get'){ // 查询
         this.propTable.tableData = data.results
       }
-      else if(method=='delete'){
-        this.propTable.tableData.splice(response.index,1);
+      else if(method=='delete'){ // 删除
+        this.propTable.tableData.splice(index,1);
+        this.$message({
+          message:'删除成功',
+          type: 'success'
+        })
+      }else if(method==='post'){ // 新增
+        this.apiSourceInfo() // *待优化：直接返回新分页数据，而不是多调一遍返回接口
       }
     }
   }

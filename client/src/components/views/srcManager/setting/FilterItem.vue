@@ -18,7 +18,7 @@
       )
     el-form-item
       el-button(@click="submitForm('ruleForm')" type='primary') 查询
-      //- el-button(@click='handleAdd' type='primary' size='small' icon='view') 添加
+      el-button(@click='handleAdd' type='primary') 新增
 </template>
 
 <script lang="ts">
@@ -38,6 +38,7 @@ export default class ViewComponent extends Vue {
     this.ruleForm = this.prop.ruleForm
   }
 
+  /* method */
   submitForm(formName: string) { // 表单提交校验
     // (this.$refs[formName] as any).validate(
     //   (valid: boolean) => {
@@ -48,11 +49,20 @@ export default class ViewComponent extends Vue {
     // )
     this.executeEmit()
   }
+  handleAdd(){
+    this.emit({ // 发射子组件参数
+      /* 请求返回的数据 */
+      /* 其他控制字段 */
+      method:'post',
+      title:'新增'
+    })
+  }
   executeEmit() {
     this.emit({ // 发射子组件参数
       /* 请求返回的数据 */
       data: this.ruleForm,
       /* 其他控制字段 */
+      option:'filter'
     })
   }
   /* 向父组件发射值 */
