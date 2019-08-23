@@ -22,7 +22,7 @@
         placeholder='请选择结束时间'
       )
     el-form-item
-      el-button(@click="submitForm('ruleForm')" type='primary') 查询
+      el-button(@click="submitForm('ruleForm')" type='primary') 筛选
       el-button(@click='handleAdd' type='primary') 新增
 </template>
 
@@ -122,7 +122,8 @@ export default class ViewComponent extends Vue {
       (valid: boolean) => {
         if (valid) {
           this.$emit('update:prop',{
-            ruleForm:this.ruleForm
+            ruleForm:this.ruleForm,
+            active: true,
           })
           this.emit({ // 发射子组件参数
             /* 请求返回的数据 */

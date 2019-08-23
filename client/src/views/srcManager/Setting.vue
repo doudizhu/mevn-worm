@@ -42,7 +42,8 @@ export default class ViewComponent extends Vue {
       name: '',
       collected__date__gte: '',
       collected__date__lte: '',
-    }
+    },
+    active: true,
   }
   //- 分页模块
   propPagination = {
@@ -101,6 +102,11 @@ export default class ViewComponent extends Vue {
   }
   // 监听：弹窗（新增&编辑）
   emitDialog(response:any){
+    if(response.method === 'post'){ // 新增模式下
+      this.propPagination.pagination.page_index = 1; // 切换为第一分页
+      this.propFilterItem.active = false // 关闭筛选激活参数,使切换分页时不带筛选参数
+    }
+    
     this.apiSourceInfo(response)
   }
 
@@ -112,6 +118,9 @@ export default class ViewComponent extends Vue {
     } = conf
     const id = data._id || conf.id || ''
     Object.assign(data,this.propPagination) // 加入分页参数
+    if(this.propFilterItem.active === true){
+      data.filterFields = this.propFilterItem.ruleForm // 加入筛选参数
+    }
 
     const response = await this.$request({
       // url: 'http://goodhope-spider-manage.herokuapp.com/api/extend/source-info/',
@@ -127,17 +136,24 @@ export default class ViewComponent extends Vue {
         this.propPagination.pagination.total = data.pagination.total
       }
       
-      if(method=='get'){ // 查询
-        this.propTable.tableData = data.results
+      if(method==='post'){ // 增
+        this.apiSourceInfo() // *待优化：直接返回新分页数据，而不是多调一遍返回接口
       }
-      else if(method=='delete'){ // 删除
+      else if(method=='delete'){ // 删 *待定：是否也后台拉取数据更新页面
         this.propTable.tableData.splice(index,1);
         this.$message({
           message:'删除成功',
           type: 'success'
         })
-      }else if(method==='post'){ // 新增
-        this.apiSourceInfo() // *待优化：直接返回新分页数据，而不是多调一遍返回接口
+      }
+      else if(method=='patch'){ // 改
+        this.$message({
+          message:'修改成功',
+          type: 'success'
+        })
+      }
+      else if(method=='get'){ // 查
+        this.propTable.tableData = data.results
       }
     }
   }
