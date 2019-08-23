@@ -14,10 +14,22 @@ router.post(
   (req,res)=>{
     // console.log('req.body:',req.body)
     const fields = req.body
+    const param = {pagination:JSON.stringify(fields.pagination)}; // 解析分页参数
 
-    new Collection(fields).save().then(result=>{
-      res.json(result)
-    })
+    // new Collection(fields).save().then(result=>{
+    //   // res.json(result)
+    // })
+
+    Collection(fields).save().then(data=>{
+      Collection.find()
+        .then(result=>{
+          if(!result){
+            return res.status(404).json('没有任何内容')
+          }
+          res.json(paginationFilter(result,param))
+        })
+        .catch(err=>res.status(404).json(err)) 
+    });
   }
 )
 

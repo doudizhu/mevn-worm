@@ -137,10 +137,15 @@ export default class ViewComponent extends Vue {
       }
       
       if(method==='post'){ // 增
-        this.apiSourceInfo() // *待优化：直接返回新分页数据，而不是多调一遍返回接口
+        this.$message({
+          message:'新增成功',
+          type: 'success'
+        })
+        this.propTable.tableData = data.results
       }
       else if(method=='delete'){ // 删 *待定：是否也后台拉取数据更新页面
-        this.propTable.tableData.splice(index,1);
+        this.propTable.tableData.splice(index,1); // 页面展示删除一条
+        this.propPagination.pagination.total--; // 总条数减一
         this.$message({
           message:'删除成功',
           type: 'success'
