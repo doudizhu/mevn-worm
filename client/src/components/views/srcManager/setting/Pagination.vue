@@ -26,11 +26,13 @@ export default class ViewComponent extends Vue {
   created(){}
 
   /* method */
-  handleSizeChange(page_size:any) {
+  // ***注意：此处不能自动同步
+  handleSizeChange(page_size:any) { // 当前页码变化
     this.executeEmit({page_size,page_index:1})
   }
-  handleCurrentChange(page_index:any) {
-    this.executeEmit({page_index})
+  // ***注意：此处可自动同步不用sync
+  handleCurrentChange(page_index:any) { // 每页条目限量变化
+    this.executeEmit()
   }
 
   /* 向父组件发射值 */
@@ -40,6 +42,18 @@ export default class ViewComponent extends Vue {
         ...(Object.assign(this.prop.pagination, conf)),
       }
     });
+
+    this.emit({ // 发射子组件响应参数 
+      /* 请求返回的数据 */
+      // data:{}
+      /* 其他控制字段 */
+    })
+  }
+  emit(response: object) {
+    this.$emit(
+      'emit',
+      response // 发射子组件参数
+    )
   }
 }
 </script>

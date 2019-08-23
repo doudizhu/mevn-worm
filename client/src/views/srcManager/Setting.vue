@@ -2,7 +2,7 @@
 .view
   //- 筛选模块
   FilterItem(
-    :prop='propFilterItem'
+    :prop.sync='propFilterItem'
     @emit='emitFilterItem'
   )
   //- 表格模块
@@ -54,15 +54,6 @@ export default class ViewComponent extends Vue {
       layout:'total,sizes,prev,pager,next,jumper', // 翻页属性
     }
   }
-  //- 分页参数监听函数
-  // 当前页码变化
-  @Watch('propPagination.pagination.page_index',{immediate: false,deep:false}) onPageIndexChange(val: any, oldVal: any) {
-    this.apiSourceInfo()
-  }
-  // 每页条目限量变化
-  @Watch('propPagination.pagination.page_size',{immediate: false,deep:false}) onPageSizeChange(val: any, oldVal: any) {
-    this.apiSourceInfo()
-  }
 
   //- 弹窗
   isShowDialog = false
@@ -79,7 +70,7 @@ export default class ViewComponent extends Vue {
   emitTable(response:any){
     // 点击“删除”按钮
     if(response.method == 'delete'){
-      this.apiSourceInfo(response); 
+      this.apiSourceInfo(response);
     }
     // 点击“编辑”按钮
     if(response.method == 'patch'){
@@ -89,6 +80,7 @@ export default class ViewComponent extends Vue {
   }
   // 监听：验证筛选模块
   emitFilterItem(response:any){
+    this.propPagination.pagination.page_index = 1; // 切换为第一分页
     // 点击“查询”按钮
     if(response.method === 'get'){
       const data = response.data;
@@ -97,13 +89,16 @@ export default class ViewComponent extends Vue {
       });
     }
     // 点击“新增”按钮
+    // 监听：弹窗（新增&编辑）
     if(response.method === 'post'){
       this.propDialog = response
       this.isShowDialog = true
     }
   }
   // 监听：分页操作,触发分页参数监听函数
-  emitPagination(response:any){}
+  emitPagination(response:any){
+    this.apiSourceInfo()
+  }
   // 监听：弹窗（新增&编辑）
   emitDialog(response:any){
     this.apiSourceInfo(response)

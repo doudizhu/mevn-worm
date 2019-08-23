@@ -77,30 +77,22 @@ router.get( // 全部
         const param = req.query
 
         // 模糊搜索
-        if(req.query.name) {
-          const name = req.query.name
-          const data = result.filter((item)=>item.name.indexOf(name) >= 0)
-          res.json({
-            results:data.map(item=>{return {value:item.name}})
-          })
-        }
-        // 远程搜索
-        else if(req.query.querySearchField) {
-          if(req.query.querySearchValue){ // 模糊查询(适用于实时动态,大数据量的情况)
-            const name = req.query.querySearchValue
+        if(param.querySearchField) {
+          if(param.querySearchValue){ // 模糊查询(适用于实时动态,大数据量的情况)
+            const name = param.querySearchValue
             const data = result.filter((item)=>item.name.indexOf(name) >= 0)
             res.json({
               results:data.map(item=>{return {value:item.name}})
             })
           }else{ // 加载全部（适用于静态首次查询，,少量数据的情况）
             res.json({
-              results:result.map(item=>{return {value:item[req.query.querySearchField]}})
+              results:result.map(item=>{return {value:item[param.querySearchField]}})
             })
           }
         }
         // 筛选
-        else if(req.query.filterFields) {
-          const filterFields = JSON.parse(req.query.filterFields)
+        else if(param.filterFields) {
+          const filterFields = JSON.parse(param.filterFields)
           let items = result
           if(filterFields.name){ 
             const name = filterFields.name
@@ -115,36 +107,12 @@ router.get( // 全部
             items = items.filter((item)=>(new Date(item.collected)).getTime() <= endTime)
           }
 
-          const data = {
-            results:items
-          }
-          res.json(data)
+          res.json(paginationFilter(items,param))
         }
         // 全部返回
         else { 
           res.json(paginationFilter(result,param))
         }
-
-        function paginationFilter(result, param){ // 分页处理参数
-          if(param.pagination){
-            const pagination = JSON.parse(param.pagination)
-            const total = result.length // 总条数
-            const index_start = pagination.page_size * (pagination.page_index-1) // 当前页码起始索引
-            let index_end = pagination.page_size * pagination.page_index; // 当前页码结束索引
-            index_end = (total > index_end) ? index_end : total;
-            // 分页容器
-            const results = result.slice(index_start,index_end)
-            // 分页总条数
-            pagination.total = total
-            return {
-              results,
-              pagination
-            }
-          }
-
-        }
-
-        
       })
       .catch(err=>res.status(404).json(err))
   }
@@ -178,3 +146,22 @@ router.get(
   }
 )
 module.exports = router
+
+
+function paginationFilter(result, param){ // 分页处理参数
+  if(param.pagination){
+    const pagination = JSON.parse(param.pagination)
+    const total = result.length // 总条数
+    const index_start = pagination.page_size * (pagination.page_index-1) // 当前页码起始索引
+    let index_end = pagination.page_size * pagination.page_index; // 当前页码结束索引
+    index_end = (total > index_end) ? index_end : total;
+    // 分页容器
+    const results = result.slice(index_start,index_end)
+    // 分页总条数
+    pagination.total = total
+    return {
+      results,
+      pagination
+    }
+  }
+}

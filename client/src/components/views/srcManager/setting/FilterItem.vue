@@ -121,6 +121,9 @@ export default class ViewComponent extends Vue {
     (this.$refs[formName] as any).validate(
       (valid: boolean) => {
         if (valid) {
+          this.$emit('update:prop',{
+            ruleForm:this.ruleForm
+          })
           this.emit({ // 发射子组件参数
             /* 请求返回的数据 */
             data: {
