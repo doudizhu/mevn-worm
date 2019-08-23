@@ -12,7 +12,7 @@
   )
   //- 分页模块
   Pagination(
-    :prop='propPagination'
+    :prop.sync='propPagination'
     @emit='emitPagination'
   )
   //- 弹窗（新增&编辑）
@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import {Component,Vue} from 'vue-property-decorator'
+import {Component,Vue,Watch} from 'vue-property-decorator'
 import {Table,FilterItem,Pagination,Dialog} from '@/components/views/srcManager/setting/index.ts'
 import axios from 'axios'
 @Component({
@@ -46,7 +46,7 @@ export default class ViewComponent extends Vue {
   }
   //- 分页模块
   propPagination = {
-    paginations: {
+    pagination: {
       page_index: 1, // 当前位于哪页
       total: 0, // 总数
       page_size: 5, // 一页显示多少条
@@ -54,14 +54,24 @@ export default class ViewComponent extends Vue {
       layout:'total,sizes,prev,pager,next,jumper', // 翻页属性
     }
   }
+  //- 分页参数监听函数
+  // 当前页码变化
+  @Watch('propPagination.pagination.page_index',{immediate: false,deep:false}) onPageIndexChange(val: any, oldVal: any) {
+    this.apiSourceInfo()
+  }
+  // 每页条目限量变化
+  @Watch('propPagination.pagination.page_size',{immediate: false,deep:false}) onPageSizeChange(val: any, oldVal: any) {
+    this.apiSourceInfo()
+  }
+
   //- 弹窗
   isShowDialog = false
   propDialog = {}
 
   /* lifecycle hook */
   created(){
-    // 初始化页面数据
-    this.apiSourceInfo() // 获取来源数据
+    // 初始化页面数据：
+    this.apiSourceInfo() // 采用默认分页参数监听函数，立即加载一次
   }
 
   /* method */
@@ -92,13 +102,8 @@ export default class ViewComponent extends Vue {
       this.isShowDialog = true
     }
   }
-  // 监听：分页操作
-  emitPagination(response:any){
-    const data = response.data;
-    this.apiSourceInfo({
-      data
-    });
-  }
+  // 监听：分页操作,触发分页参数监听函数
+  emitPagination(response:any){}
   // 监听：弹窗（新增&编辑）
   emitDialog(response:any){
     this.apiSourceInfo(response)
@@ -111,6 +116,7 @@ export default class ViewComponent extends Vue {
       index=0,
     } = conf
     const id = data._id || conf.id || ''
+    Object.assign(data,this.propPagination) // 加入分页参数
 
     const response = await this.$request({
       // url: 'http://goodhope-spider-manage.herokuapp.com/api/extend/source-info/',
@@ -122,6 +128,10 @@ export default class ViewComponent extends Vue {
 
     if(response.status >= 200 && response.status < 300){
       const data = response.data
+      if(data.pagination){
+        this.propPagination.pagination.total = data.pagination.total
+      }
+      
       if(method=='get'){ // 查询
         this.propTable.tableData = data.results
       }

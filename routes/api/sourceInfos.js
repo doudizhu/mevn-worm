@@ -74,7 +74,7 @@ router.get( // 全部
           return res.status(404).json('没有任何内容')
         }
 
-        console.log('req.query',req.query)
+        const param = req.query
 
         // 模糊搜索
         if(req.query.name) {
@@ -122,11 +122,29 @@ router.get( // 全部
         }
         // 全部返回
         else { 
-          const data = {
-            results:result
-          }
-          res.json(data)
+          res.json(paginationFilter(result,param))
         }
+
+        function paginationFilter(result, param){ // 分页处理参数
+          if(param.pagination){
+            const pagination = JSON.parse(param.pagination)
+            const total = result.length // 总条数
+            const index_start = pagination.page_size * (pagination.page_index-1) // 当前页码起始索引
+            let index_end = pagination.page_size * pagination.page_index; // 当前页码结束索引
+            index_end = (total > index_end) ? index_end : total;
+            // 分页容器
+            const results = result.slice(index_start,index_end)
+            // 分页总条数
+            pagination.total = total
+            return {
+              results,
+              pagination
+            }
+          }
+
+        }
+
+        
       })
       .catch(err=>res.status(404).json(err))
   }
