@@ -43,7 +43,7 @@ export default class ViewComponent extends Vue {
       collected__date__gte: '',
       collected__date__lte: '',
     },
-    active: true,
+    active: false,
   }
   //- 分页模块
   propPagination = {
