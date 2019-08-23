@@ -13,7 +13,7 @@ const stateTpl = {
    * 线上python
    * http://goodhope-spider-manage.herokuapp.com/api/extend
    */
-  domainApi:'http://localhost:5000/api',
+  domainApi:`${process.env.NODE_ENV==='production' ? '' : 'http://localhost:5000'}/api`,
 }
 
 export default new Vuex.Store({
