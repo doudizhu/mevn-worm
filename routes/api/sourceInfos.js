@@ -74,6 +74,8 @@ router.get( // 全部
           return res.status(404).json('没有任何内容')
         }
 
+        console.log('req.query',req.query)
+
         // 模糊搜索
         if(req.query.name) {
           const name = req.query.name

@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 
 // 引入api
-const sourceInfos = require('./routes/api/sourceInfosTemp')
+const sourceInfos = require('./routes/api/sourceInfos')
 
 const db = require('./config/keys').mongoURI
 console.log(db)
