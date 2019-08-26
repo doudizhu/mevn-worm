@@ -11,7 +11,12 @@
       el-form-item(prop='name' label='规则名称')
         el-input(v-model='ruleForm.name')
       el-form-item(prop='source_info' label='所属源站')
-        el-input(v-model='ruleForm.source_info' placeholder="模糊搜索")
+        //- el-input(v-model='ruleForm.source_info' placeholder="模糊搜索")
+        el-autocomplete(
+        placeholder="模糊搜索"
+        v-model.trim="ruleForm.source_info"
+        :fetch-suggestions="querySearchAsync"
+      )
       el-form-item(label='采集类别' prop='category')
         el-input(v-model='ruleForm.category')
       el-form-item(label='层级' prop='is_two_layers')
@@ -79,11 +84,13 @@ export default class MyComponent extends Vue {
   }
   rules: {} = {
     name: {required:true,message: '请输入',trigger:'blur'},
-    source_info: {required:true,message:'不能为空',trigger:'blur'},
-    category:{required:true,message:'不能为空',trigger:'blur'},
-    is_two_layers:{required:true,message:'不能为空',trigger:'blur'},
+    source_info: [
+      {required:true,message:'请输入',trigger:['blur','change']},
+    ],
+    category:{required:true,message:'请输入',trigger:'blur'},
+    is_two_layers:{required:true,message:'请输入',trigger:'blur'},
 
-    page_type:{required:true,message:'不能为空',trigger:'blur'},
+    page_type:{required:true,message:'请输入',trigger:'blur'},
     src_url: {required:true,trigger:'blur',message: '请输入'},
     restrict_xpath: {required:true,trigger:'blur',message: '请输入'},
     allow: {required:true,trigger:'blur',message: '请输入'},
@@ -93,12 +100,19 @@ export default class MyComponent extends Vue {
     api_url: {required:true,trigger:'blur',message: '请输入'},
     // remarks: {required:true,trigger:'blur',message: '请输入'},
   }
+  // 模糊搜索相关
+  allName = []
+  allNameBackup = []
+  timeout:any = null
 
   /* lifecycle hook */
   created(){
     if(this.prop.method === 'patch'){
       this.ruleForm = this.prop.ruleForm
     }
+  }
+  mounted() {
+    this.loadAllName() // 模糊搜索相关
   }
 
   /* method */
@@ -114,6 +128,36 @@ export default class MyComponent extends Vue {
         this.visible = false
       }
     })
+  }
+  querySearchAsync(queryString:string, cb?:any) {
+    var queryData = this.allName;
+    var results = queryString ? queryData.filter(this.createStateFilter(queryString)) : queryData;
+
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      cb(results);
+    }, 1000 * Math.random());
+  }
+  createStateFilter(queryString:string) {
+    return (state:any) => {
+      return (state.value.toString().toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+    };
+  }
+  async loadAllName(){
+    const response = await this.$request({ // 模糊搜索全部
+      api:'/sourceInfos/',
+      data:{
+        querySearchField:'name',
+        querySearchValue:'',
+      },
+      method:'get',
+    })
+
+    if(response.status >= 200 && response.status < 400){
+      this.allName = response.data.results
+      // this.allNameBackup = response.data.results
+      console.log('this.allName',this.allName)
+    }
   }
 
   /* 向父组件发射值 */
