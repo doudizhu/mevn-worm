@@ -7,6 +7,7 @@
         placeholder="模糊搜索"
         v-model.trim="ruleForm.name"
         :fetch-suggestions="querySearchAsync"
+        @select="submitForm('ruleForm')"
       )
     //- 筛选
     el-form-item(label='采集时间')

@@ -90,17 +90,9 @@ router.get( // 全部
 
         // 模糊搜索
         if(param.querySearchField) {
-          if(param.querySearchValue){ // 模糊查询(适用于实时动态,大数据量的情况)
-            const name = param.querySearchValue
-            const data = result.filter((item)=>item.name.indexOf(name) >= 0)
-            res.json({
-              results:data.map(item=>{return {value:item.name}})
-            })
-          }else{ // 加载全部（适用于静态首次查询，,少量数据的情况）
-            res.json({
-              results:result.map(item=>{return {value:item[param.querySearchField]}})
-            })
-          }
+          res.json({
+            results:arrObjSearch(result,param.querySearchField,param.querySearchValue)
+          })
         }
         // 筛选
         else if(param.filterFields) {
@@ -176,4 +168,24 @@ function paginationFilter(result, param){ // 分页处理参数
       pagination
     }
   }
+}
+
+// 模糊搜索
+function arrObjSearch (arrObj,searchField,searchValue) {
+  const result = [] // 集合结果
+  const set = new Set() // set去重
+  
+  for(const item of arrObj){
+      const itemValue = item[searchField] //当前条目值
+      if(
+          itemValue.indexOf(searchValue) >= 0 // 当前条目值，含有搜索值
+          && !set.has(itemValue) // 且当前条目值，未被重复添加
+      ){
+          set.add(itemValue)
+          result.push({
+              value: itemValue,
+          })   
+      }
+  }
+  return result 
 }
