@@ -178,7 +178,7 @@ function arrObjSearch (arrObj,searchField,searchValue) {
   for(const item of arrObj){
       const itemValue = item[searchField] //当前条目值
       if(
-          itemValue.indexOf(searchValue) >= 0 // 当前条目值，含有搜索值
+          itemValue.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0 // 当前条目值，含有搜索值
           && !set.has(itemValue) // 且当前条目值，未被重复添加
       ){
           set.add(itemValue)
