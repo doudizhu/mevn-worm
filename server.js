@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 
 // 引入api
 const sourceInfos = require('./routes/api/sourceInfos')
+const rulesConfig = require('./routes/api/rulesConfig')
 
 const db = require('./config/keys').mongoURI
 console.log(db)
@@ -40,6 +41,7 @@ app.use((req,res,next)=>{
 
 // 使用routes
 app.use('/api/sourceInfos',sourceInfos)
+app.use('/api/rulesConfig',rulesConfig)
 
 
 // 执行前端静态页面
