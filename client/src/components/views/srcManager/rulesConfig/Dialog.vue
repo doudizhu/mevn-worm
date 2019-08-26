@@ -86,6 +86,41 @@ export default class MyComponent extends Vue {
     name: {required:true,message: '请输入',trigger:'blur'},
     source_info: [
       {required:true,message:'请输入',trigger:['blur','change']},
+      {
+        // trigger: 'none', // 仅当点击按钮时触发
+        trigger:'blur',
+        validator: async (rule: any, value: any, callback: any, source: any, options: any) => {
+          const errors: string[] = [];
+
+          const response = await this.$request({ // 模糊搜索全部
+            api:'/sourceInfos/',
+            data:{
+              querySearchField:'name',
+              querySearchValue:value,
+            },
+            method:'get',
+          })
+
+          if(response.status >= 200 && response.status < 400){
+            const results = response.data.results || []
+            if (results.length <= 0) {
+              errors.push('请输入已存在的源站地址')
+              this.$message({
+                message:'“所属源站”字段输入框：请输入已存在的源站地址',
+                type: 'error'
+              })
+            }
+          }
+          /*
+          // 方式二：可少发一次请求，但是目前有坑,故暂时不用
+          // ***待优化：此处尚存在除了ruleform能取到实时值，其他只能取到初始值
+          if (!this.allName.some((item:any)=>item.value === value)) {
+            errors.push('请输入已存在的源站地址')
+          }
+          */
+          callback(errors)
+        }
+      },
     ],
     category:{required:true,message:'请输入',trigger:'blur'},
     is_two_layers:{required:true,message:'请输入',trigger:'blur'},
