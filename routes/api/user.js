@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const gravatar = require('gravatar');
 
 const User = require('../../models/User')
 
@@ -24,10 +25,13 @@ router.post('/register',(req,res)=>{
       if(user){
         return res.status(400).json({email:'邮箱已被注册！'})
       }else{
+        const avatar = gravatar.url('req.body.email', {s: '200', r: 'pg', d: 'mm'});
+
         const newUser = new User({
           name:req.body.name,
           email:req.body.email,
           password:req.body.password,
+          avatar,
         })
 
 
