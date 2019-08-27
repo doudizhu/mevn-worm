@@ -4,6 +4,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const gravatar = require('gravatar');
 const jwt = require('jsonwebtoken');
+const passport = require('passport')
 
 const User = require('../../models/User')
 const keys = require('../../config/keys')
@@ -16,7 +17,7 @@ router.get('/test',(req,res)=>{
 })
 
 
-// $router GET api/users/register
+// $router POST api/users/register
 // @desc 返回请求的json数据
 // @accsss public
 router.post('/register',(req,res)=>{
@@ -54,7 +55,7 @@ router.post('/register',(req,res)=>{
 })
 
 
-// $router GET api/users/login
+// $router POST api/users/login
 // @desc 返回token jwt passport
 // @accsss public
 router.post('/login',(req,res)=>{
@@ -78,7 +79,7 @@ router.post('/login',(req,res)=>{
               if(err) throw err;
               res.json({
                 success:true,
-                token:'lp'+token
+                token:'Bearer '+token
               })
             })
           }else{
@@ -86,6 +87,17 @@ router.post('/login',(req,res)=>{
           }
         })
     })
+})
+
+// $router GET api/users/current
+// @desc return current user
+// @accsss Private
+router.get('/current',passport.authenticate('jwt',{session:false}),(req,res) => {
+  res.json({
+    id:req.user.id,
+    name:req.user.name,
+    email:req.user.email,
+  })
 })
 
 

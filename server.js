@@ -3,6 +3,7 @@ const app = express()
 const path = require('path')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const passport = require('passport')
 
 // 引入api
 const sourceInfos = require('./routes/api/sourceInfos')
@@ -19,9 +20,10 @@ mongoose
   .then(()=>{console.log('MongoDB Connected')})
   .catch(err=>console.log(err))
 
-app.get('/',(req,res)=>{
-  res.send('Hello World!')
-})
+
+// app.get('/',(req,res)=>{
+//   res.send('Hello World!')
+// })
 
 // 使用body-parser中间件
 // ***注意:需要放在接口调用之前，否则数据为undifine
@@ -39,6 +41,9 @@ app.use((req,res,next)=>{
   });
   next();
 })
+// passport 初始化
+app.use(passport.initialize());
+require('./config/passport')(passport)
 
 // 使用routes
 app.use('/api/sourceInfos',sourceInfos)
