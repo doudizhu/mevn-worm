@@ -9,12 +9,12 @@ const passport = require('passport')
 const User = require('../../models/User')
 const keys = require('../../config/keys')
 
-// $router GET api/users/test
-// @desc 返回请求的json数据
-// @accsss public
-router.get('/test',(req,res)=>{
-  res.json({msg:'login works'})
-})
+// // $router GET api/users/test
+// // @desc 返回请求的json数据
+// // @accsss public
+// router.get('/test',(req,res)=>{
+//   res.json({msg:'login works'})
+// })
 
 
 // $router POST api/users/register
@@ -26,7 +26,7 @@ router.post('/register',(req,res)=>{
   User.findOne({email:req.body.email})
     .then(user=>{
       if(user){
-        return res.status(400).json({email:'邮箱已被注册！'})
+        return res.status(400).json('邮箱已被注册！')
       }else{
         const avatar = gravatar.url('req.body.email', {s: '200', r: 'pg', d: 'mm'});
 
@@ -35,6 +35,7 @@ router.post('/register',(req,res)=>{
           email:req.body.email,
           password:req.body.password,
           avatar,
+          identity:req.body.identity,
         })
 
 
@@ -66,13 +67,18 @@ router.post('/login',(req,res)=>{
   User.findOne({email})
     .then(user=>{
       if(!user){
-        return res.status(404).json({email:'用户不存在'})
+        return res.status(404).json('用户不存在')
       }
       // 密码匹配
       bcrypt.compare(password, user.password)
         .then(isMatch=>{
           if(isMatch){
-            const rule = {id:user.id,name:user.name}
+            const rule = {
+              id:user.id,
+              name:user.name,
+              avatar: user.avatar,
+              identity: user.identity
+            }
 
             // jwt.sign('规则','加密名字','过期时间','箭头函数')
             jwt.sign(rule,keys.secretOrKey,{expiresIn:3600},(err,token)=>{
@@ -83,7 +89,7 @@ router.post('/login',(req,res)=>{
               })
             })
           }else{
-            return res.status(400).json({password:'密码错误'})
+            return res.status(400).json('密码错误')
           }
         })
     })
@@ -97,6 +103,7 @@ router.get('/current',passport.authenticate('jwt',{session:false}),(req,res) => 
     id:req.user.id,
     name:req.user.name,
     email:req.user.email,
+    identity:req.user.identity,
   })
 })
 
