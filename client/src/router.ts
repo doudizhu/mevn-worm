@@ -60,7 +60,16 @@ export const routes = [
       },
     ],
   },
-
+  {
+    path: '/register',
+    name: 'register',
+    component: ()=>import('./views/Register.vue')
+  },
+  {
+    path: '*',
+    name: '/404',
+    component: ()=>import('./views/404.vue')
+  },
 ] 
 
 export default new Router({
