@@ -38,11 +38,9 @@ export default class ViewComponent extends Vue {
         message:'注册成功',
         type: 'success'
       })
+      this.$router.push('/login')
     }else{
-      this.$message({
-        message:response,
-        type: 'success'
-      })
+      // * 待优化：处理错误返回结果
     }
   }
 }

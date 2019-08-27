@@ -1,5 +1,5 @@
 import axios, {AxiosResponse,AxiosRequestConfig} from 'axios'
-import {Message} from 'element-ui'
+import {Message,Loading} from 'element-ui'
 import router from '@/router';
 import store from '@/store'
 
@@ -10,7 +10,7 @@ import store from '@/store'
  *
  * 响应拦截器 负责全局处理业务请求的网络或者业a务错误
  */
-
+let loadingInstance:any;
 // 创建axios的实例
 const service = axios.create({
   timeout: 10000 // 超时时间
@@ -19,6 +19,7 @@ const service = axios.create({
 // 请求拦截
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
+    loadingInstance = Loading.service({background: 'transparent'}) // 打开请求中弹窗
     if(localStorage.tsToken){
       config.headers.Authorization = localStorage.tsToken
     }
@@ -32,6 +33,7 @@ service.interceptors.request.use(
 // 响应拦截
 service.interceptors.response.use(
   (response: AxiosResponse) => {
+    loadingInstance.close() // 关闭请求中弹窗
     return response;
   },
   (err: any) => {
