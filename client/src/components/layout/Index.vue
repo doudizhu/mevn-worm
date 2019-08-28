@@ -3,17 +3,17 @@
   .aside
     Sidebar
   .container
-    .header header
+    Header
     .main
       router-view
 </template>
 
 <script lang="ts">
 import {Component,Vue} from 'vue-property-decorator'
-import {Sidebar} from '@/components/layout/index.ts'
+import {Sidebar,Header} from '@/components/layout/index.ts'
 @Component({
   components:{
-    Sidebar,
+    Sidebar,Header
   }
 })
 export default class ViewComponent extends Vue {

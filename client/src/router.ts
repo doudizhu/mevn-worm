@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store'
+import {Message} from 'element-ui'
 // import Home from './views/Home.vue'
 
 Vue.use(Router)
@@ -63,6 +64,22 @@ export const routes = [
     ],
   },
   {
+    path: '/personalInfo',
+    hidden: true,
+    component: () => import('./components/layout/Index.vue'), // 布局组件
+    redirect: '/personalInfo/index',
+    children: [
+      {
+        path: '/personalInfo/index',
+        name: 'personalInfo',
+        meta: {
+          title: '个人信息',
+        },
+        component: () => import('./views/PersonalInfo.vue'),
+      },
+    ]
+  },
+  {
     path: '/register',
     name: 'register',
     meta: {
@@ -112,7 +129,7 @@ router.beforeEach((to,from,next)=>{
       next()
     } else {
       next()
-      alert('登录状态失效，请重新登录')
+      Message.error('登录状态失效，请重新登录');
       store.commit('resetAll')
       next({
         path: '/login',
