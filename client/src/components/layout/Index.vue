@@ -27,4 +27,6 @@ export default class ViewComponent extends Vue {
   display:flex;
   &>.container
     flex 1
+    .main
+      padding 20px
 </style>
