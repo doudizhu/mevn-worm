@@ -44,6 +44,7 @@ export const routes = [
     meta: {
       title: '源站管理',
     },
+    redirect:'/srcManager/setting',
     children: [
       {
         path: 'setting',
