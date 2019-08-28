@@ -13,15 +13,16 @@ import store from '@/store'
 let loadingInstance:any;
 // 创建axios的实例
 const service = axios.create({
-  timeout: 10000 // 超时时间
+  timeout: 100000 // 超时时间
 })
 
 // 请求拦截
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     loadingInstance = Loading.service({background: 'transparent'}) // 打开请求中弹窗
-    if(localStorage.tsToken){
-      config.headers.Authorization = localStorage.tsToken
+    if(store.state.eleToken){
+      // 设置统一的请求头
+      config.headers.Authorization = store.state.eleToken
     }
     return config;
   },
@@ -42,8 +43,8 @@ service.interceptors.response.use(
       switch (err.response.status) {
         case 401:
           errMsg = '登录状态失效，请重新登录';
-          localStorage.removeItem('tsToken')
-          router.push('/login')
+          store.commit('resetAll')
+          router.push('/login') // ***待优化：请求守卫重定向
           break;
         case 403:
           errMsg = '拒绝访问';
@@ -116,7 +117,7 @@ export default function request(options:any) {
     withCredentials = false, // 允许携带cookie
   } = options
 
-  return (axios as any)[method](
+  return (service as any)[method](
     // url
     url || store.state.domainApi + api,
     // param

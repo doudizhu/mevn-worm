@@ -1,6 +1,6 @@
 <template lang="pug">
 .view
-  el-form(@submit.prevent='onSubmit' label-width="135px"
+  el-form(@submit.prevent='onSubmit' label-width="120px"
     :model="ruleForm"
     :rules="rules"
     ref="ruleForm"
@@ -8,7 +8,7 @@
   )
     h2 登录
     el-form-item(prop="email" label='邮箱')
-      el-input(v-model='ruleForm.email' type='email')
+      el-input(v-model='ruleForm.email' type='email' autofocus)
     el-form-item(prop="password" label='密码')
       el-input(v-model='ruleForm.password' type="password" placeholder='6~20位字母、数字或英文符号组合，区分大小写')
     el-form-item
@@ -88,10 +88,10 @@ export default class ViewComponent extends Mixins(ValidateMixin) {
   >.el-form{ // ***待解决：stylus 不带花括号报错
 		padding 40px 0 18px 0
 		border 1px solid #eee
-		max-width 560px
+		max-width 600px
 		margin 120px auto 0;
     .el-form-item{
-      padding-right 135px
+      padding-right 120px
     }
     >h2{
       text-align center

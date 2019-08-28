@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from './store'
 // import Home from './views/Home.vue'
 
 Vue.use(Router)
@@ -10,6 +11,7 @@ Vue.use(Router)
 * meta : {
     title: 'title'               对应路由在左侧菜单栏的标题名称
     icon: 'icon-class'           对应路由在左侧菜单栏的图标样式，样式使用fontawesome图标库
+    requireAuth: false,         // 不需要登录访问,否则都需要登录才能访问
   }
 **/
 export const routes = [
@@ -63,22 +65,61 @@ export const routes = [
   {
     path: '/register',
     name: 'register',
+    meta: {
+      title: '注册',
+      requireAuth: false, // 不需要登录访问
+    },
     component: ()=>import('./views/Register.vue')
   },
   {
     path: '/login',
     name: 'login',
+    meta: {
+      title: '登录',
+      requireAuth: false, // 不需要登录访问
+    },
     component: ()=>import('./views/Login.vue')
   },
   {
     path: '*',
     name: '/404',
+    meta: {
+      title: '404',
+      requireAuth: false, // 不需要登录访问
+    },
     component: ()=>import('./views/404.vue')
   },
-] 
+]
 
-export default new Router({
+
+
+
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
 })
+
+// 路由守卫
+router.beforeEach((to,from,next)=>{
+  const isLogin = store.state.eleToken ? true : false;
+  /* 页面路由守卫：判断：是否需要登录访问 */
+  if (to.meta.requireAuth === false) { // 不需要登录访问
+    next()
+  } 
+  else { // 需要登录访问
+    if (store.state.eleToken) { // 含有token
+      next()
+    } else {
+      next()
+      alert('登录状态失效，请重新登录')
+      store.commit('resetAll')
+      next({
+        path: '/login',
+        query: {redirect: to.fullPath},
+      })
+    }
+  }
+})
+
+export default router

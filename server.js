@@ -36,7 +36,7 @@ app.use((req,res,next)=>{
     'Access-Control-Allow-Methods':'GET,POST,PUT,PATCH,DELETE',
 
     "Access-Control-Allow-Credentials": "true",
-    "Access-Control-Allow-Headers": "Content-Type,Access-Token",
+    "Access-Control-Allow-Headers": "*",
     "Access-Control-Expose-Headers": "*",
   });
   next();

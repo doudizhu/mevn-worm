@@ -40,7 +40,13 @@ export default class ViewComponent extends Vue {
       if(response.data.success === true){
         this.$store.commit('setEleToken',response.data.token)
       }
-      this.$router.push ('/')
+
+      const redirect = this.$route.query.redirect as string
+      if (redirect) { // 重定向
+        this.$router.replace(redirect) 
+      } else {
+        this.$router.push ('/')
+      }
     }else{
       // * 待优化：处理错误返回结果
     }

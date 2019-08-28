@@ -1,6 +1,6 @@
 <template lang="pug">
 .view
-  el-form(@submit.prevent='onSubmit' label-width="135px"
+  el-form(@submit.prevent='onSubmit' label-width="120px"
     :model="ruleForm"
     :rules="rules"
     ref="ruleForm"
@@ -106,10 +106,10 @@ export default class ViewComponent extends Mixins(ValidateMixin) {
   >.el-form{ // ***待解决：stylus 不带花括号报错
 		padding 40px 0 18px 0
 		border 1px solid #eee
-		max-width 560px
+		max-width 600px
 		margin 120px auto 0;
     .el-form-item{
-      padding-right 135px
+      padding-right 120px
     }
     >h2{
       text-align center
