@@ -16,3 +16,11 @@ export default class ViewComponent extends Vue {
   
 }
 </script>
+
+<style lang='stylus'>
+  .link-text
+    text-decoration: none
+    color #aaa
+    &:hover
+      color #f86965
+</style>

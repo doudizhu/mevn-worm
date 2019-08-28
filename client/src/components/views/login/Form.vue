@@ -6,23 +6,16 @@
     ref="ruleForm"
     @keyup.enter.native="submitForm('ruleForm')"
   )
-    h2 注册
-    el-form-item(prop="name" label='用户名')
-      el-input(v-model='ruleForm.name' autofocus placeholder='长度在2到30个字符之间')
+    h2 登录
     el-form-item(prop="email" label='邮箱')
       el-input(v-model='ruleForm.email' type='email')
     el-form-item(prop="password" label='密码')
       el-input(v-model='ruleForm.password' type="password" placeholder='6~20位字母、数字或英文符号组合，区分大小写')
-    el-form-item(prop="passwordConfirm" label='确认密码')
-      el-input(v-model='ruleForm.passwordConfirm' type="password" placeholder='6~20位字母、数字或英文符号组合，区分大小写')
-    el-form-item(prop="identity" label='选择身份')
-      el-select(v-model='ruleForm.identity' placeholder='请选择身份')
-        el-option(label='管理员' value='manager')
-        el-option(label='员工' value='employee')
     el-form-item
       el-button(@click="submitForm('ruleForm')" type='primary') 确认
       p
-        router-link(to='/login' style='float:right;').link-text 已有账号，立即登录
+        router-link(to="/forgetPassword").link-text 忘记密码
+        router-link(to="/register" style='float:right;').link-text 立即注册
 </template>
 
 <script lang="ts">
@@ -44,10 +37,6 @@ export default class ViewComponent extends Mixins(ValidateMixin) {
     identity:'',
   }
   rules = {
-    name:[
-      {message:'不能为空',trigger:'blur',required: true,},
-      {message:'长度在2到30个字符之间',min:2,max:30,trigger:'blur'}
-    ],
     email:[
       {message:'不能为空',trigger:'blur',required: true,},
       {message:'邮箱格式不正确',type:'email',trigger:'blur',required:true}
@@ -58,11 +47,6 @@ export default class ViewComponent extends Mixins(ValidateMixin) {
       {validator: this.pwdRules, trigger: 'blur'},
       {message: '请填写正确的密码',pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/, trigger: 'blur'},
     ],
-    passwordConfirm: [
-      {message:'不能为空',trigger:'blur',required: true,},
-      {validator: this.pwdConfirm(this), trigger: 'blur'},
-    ],
-    identity:{message:'不能为空',trigger:'blur',required: true,},
   }
 
   /* lifecycle hook */
@@ -83,10 +67,8 @@ export default class ViewComponent extends Mixins(ValidateMixin) {
     this.emit({ // 发射子组件响应参数 
       /* 请求返回的数据 */
       data:{
-        name: this.ruleForm.name,
         email: this.ruleForm.email,
         password: this.ruleForm.password,
-        identity: this.ruleForm.identity,
       }
       /* 其他控制字段 */
     })
