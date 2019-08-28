@@ -20,3 +20,16 @@ export function debounce (fn:any, delay=400) {
     }, delay);
   }
 }
+
+/**
+ * 校验为空，忽略数据格式
+ * @param value 
+ */
+export function isEmpty (value:any){
+  return (
+    value === undefined
+    || null
+    || (typeof value === 'object' && Object.keys(value).length === 0)
+    || (typeof value === 'string' && value.trim().length === 0)
+  )
+}

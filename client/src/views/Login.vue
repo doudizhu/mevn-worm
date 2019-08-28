@@ -9,6 +9,8 @@
 <script lang="ts">
 import {Component,Vue} from 'vue-property-decorator'
 import {Form} from '@/components/views/login/index.ts'
+import jwt_decode from 'jwt-decode'
+import {isEmpty} from '@/utils'
 @Component({
   components:{Form,}
 })
@@ -37,9 +39,19 @@ export default class ViewComponent extends Vue {
         message:'登录成功',
         type: 'success'
       })
+      // token
       if(response.data.success === true){
-        this.$store.commit('setEleToken',response.data.token)
+        const {token} = response.data
+        // 存储token
+        this.$store.commit('setEleToken',token)
+
+        // 解析token
+        const decoded = jwt_decode(token)
+        // token存储到vuex中
+        this.$store.dispatch('setAuthenticated',!isEmpty(decoded))
+        this.$store.dispatch('setUser',decoded)
       }
+      
 
       const redirect = this.$route.query.redirect as string
       if (redirect) { // 重定向
