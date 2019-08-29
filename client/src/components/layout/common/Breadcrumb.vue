@@ -31,7 +31,7 @@ export default class Content extends Vue {
 
     // 遍历父级到当前子路由的页面的title和path 存储到数组里
     for(const index in router.matched){
-      console.log(router.matched[index])
+      // console.log(router.matched[index])
       if(router.matched[index].meta && router.matched[index].meta.title){
         breadCrumbItems.push({
           path: router.matched[index].path ? router.matched[index].path : '/',
@@ -40,7 +40,7 @@ export default class Content extends Vue {
       }
     }
     
-    console.log('breadCrumbItems:',breadCrumbItems)
+    // console.log('breadCrumbItems:',breadCrumbItems)
 
     this.breadCrumbItems = breadCrumbItems;
   }

@@ -23,7 +23,9 @@ const stateTpl = {
   /**登录相关 */
   eleToken:'',
   isAuthenticated: false,
-  user:{}
+  user:{},
+
+  isCollapseSidebar: true,
 }
 
 export default new Vuex.Store({
@@ -49,7 +51,10 @@ export default new Vuex.Store({
     [types.SET_USER](state,user){
       if(user) state.user = user
       else state.user = {}
-    }
+    },
+    setIsCollapseSidebar(state, isCollapseSidebar){ 
+      state.isCollapseSidebar = isCollapseSidebar
+    },
   },
   actions: {
     async setRoutes({state,commit},user){

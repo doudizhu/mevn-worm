@@ -1,5 +1,7 @@
 <template lang="pug">
 .view
+  //- 0.侧边栏展开收起模块
+  CollapseSidbar
   //- 1.面包屑导航
   Breadcrumb
   //- 2.账户信息下拉菜单
@@ -8,9 +10,9 @@
 
 <script lang="ts">
 import {Component,Vue} from 'vue-property-decorator'
-import {AccountInfo,Breadcrumb} from '@/components/layout/common/index.ts'
+import {AccountInfo,Breadcrumb,CollapseSidbar} from '@/components/layout/common/index.ts'
 @Component({
-  components:{AccountInfo,Breadcrumb,}
+  components:{AccountInfo,Breadcrumb,CollapseSidbar}
 })
 export default class ViewComponent extends Vue {
 

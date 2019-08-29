@@ -27,6 +27,7 @@ export default class ViewComponent extends Vue {
   display:flex;
   &>.container
     flex 1
+    overflow hidden // 防止elemnt-ui表格宽度，侧边栏变化自动计算后撑爆视窗
     .main
       padding 20px
 </style>

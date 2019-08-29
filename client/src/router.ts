@@ -32,6 +32,7 @@ export const routes = [
         name: 'dashboard',
         meta: {
           title: '仪表盘',
+          icon:'el-icon-menu'
         },
         component: () => import('./views/Dashboard.vue'),
       },
