@@ -23,9 +23,10 @@ export default class ViewComponent extends Vue {
 .view
   height 56px
   line-height 56px
-  padding 0 20px
+  padding 0 20px 0 0
   // background-color #fafafa
-  background-color #eee
+  // background-color #eee
+  background-color #eef1f6
 
   position sticky
   top 0
