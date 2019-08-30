@@ -28,6 +28,10 @@ export default class ViewComponent extends Vue {
   /**data */
   isCollapse = true
   @Watch('isCollapse',{immediate: true}) onNameChange(val: string, oldVal: string) { 
+    if(oldVal === undefined){ // 首次加载，初始化侧边栏折叠值
+      this.isCollapse = this.$store.state.isCollapseSidebar
+      return;
+    }
     this.$store.commit('setIsCollapseSidebar',val)
   };
 }
