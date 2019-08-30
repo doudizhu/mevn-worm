@@ -81,6 +81,104 @@ export const routes = [
       },
     ]
   },
+  { 
+    // 1级
+    path: '/1', // 多级导航递归demo
+    hidden: true,
+    component: () => import('./components/layout/Index.vue'), // 布局组件
+    meta: {
+      title: '多级导航demo',
+    },
+    redirect:'/1/1',
+    children: [
+      // 2级,2个
+      {
+        path: '1',
+        meta: {
+          title: '1-1',
+        },
+        component: { render (c:any) { return c('router-view') }}, // 嵌套路由值时，引用组件（等价于下式）
+        // component: {
+        //   render(createElement:any) {
+        //       return createElement('router-view')
+        //   }
+        // },
+        children: [
+          // 3级，2个
+          {
+            path: '1',
+            meta: {
+              title: '1-1-1',
+            },
+            component: { render (c:any) { return c('router-view') }},
+            children: [
+              // 4级，4个（2号无children,3号隐藏，4号含子式）
+              {
+                path: '1',
+                meta: {
+                  title: '1-1-1-1',
+                },
+                component: () => import('./views/Home.vue'),
+                children: [
+                  
+                ],
+              },
+              {
+                path: '2',
+                meta: {
+                  title: '1-1-1-2',
+                },
+                component: () => import('./views/Home.vue'),
+              },
+              {
+                path: '3',
+                meta: {
+                  title: '1-1-1-3',
+                },
+                hidden:false,
+                component: () => import('./views/Home.vue'),
+                children: [],
+              },
+              {
+                path: '4',
+                meta: {
+                  title: '1-1-1-4',
+                },
+                component: { render (c:any) { return c('router-view') }},
+                children: [
+                  {
+                    path: '1',
+                    meta: {
+                      title: '1-1-1-4-1',
+                    },
+                    component: () => import('./views/Home.vue'),
+                  },
+                ],
+              },
+            ],
+          },
+          // 3级
+          {
+            path: '2',
+            meta: {
+              title: '1-1-2',
+            },
+            component: () => import('./views/Home.vue'),
+          },
+        ],
+      },
+      {
+        path: '2',
+        meta: {
+          title: '1-2',
+        },
+        component: () => import('./views/Home.vue'),
+        children: [
+          
+        ],
+      },
+    ]
+  },
   {
     path: '/register',
     name: 'register',

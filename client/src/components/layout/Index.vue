@@ -1,7 +1,7 @@
 <template lang="pug">
 .view.layout
   .aside
-    Sidebar
+    SidebarRecursive
   .container
     Header
     .main
@@ -10,10 +10,10 @@
 
 <script lang="ts">
 import {Component,Vue} from 'vue-property-decorator'
-import {Sidebar,Header} from '@/components/layout/index.ts'
+import {SidebarRecursive,Header,} from '@/components/layout/index.ts'
 @Component({
   components:{
-    Sidebar,Header
+    SidebarRecursive,Header,
   }
 })
 export default class ViewComponent extends Vue {
