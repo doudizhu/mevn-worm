@@ -7,7 +7,7 @@ import {Message} from 'element-ui'
 Vue.use(Router)
 
 /**
-* hidden: true                   如果hidden为true则在左侧菜单栏展示，否则不显示
+* hidden: true                   如果hidden为true则不在左侧菜单栏展示，否则不显示  if `hidden:true` will not show in the sidebar(default is false)
 * name:'router-name'             路由名称，必须填写
 * meta : {
     title: 'title'               对应路由在左侧菜单栏的标题名称
@@ -23,9 +23,8 @@ export const routes = [
   // },
   {
     path: '/',
-    hidden: true,
     component: () => import('./components/layout/Index.vue'), // 布局组件
-    redirect: '/dashboard',
+    redirect: '/dashboard', // 第一层如果需要用到layout布局组件，需要重定向到子组件
     children: [
       {
         path: '/dashboard',
@@ -40,12 +39,11 @@ export const routes = [
   },
   {
     path: '/srcManager',
-    hidden: true,
     component: () => import('./components/layout/Index.vue'), // 布局组件
     meta: {
       title: '源站管理',
     },
-    redirect:'/srcManager/setting',
+    redirect:'/srcManager/setting', // 第一层如果需要用到layout布局组件，需要重定向到子组件
     children: [
       {
         path: 'setting',
@@ -67,12 +65,11 @@ export const routes = [
   },
   {
     path: '/personalInfo',
-    hidden: true,
     component: () => import('./components/layout/Index.vue'), // 布局组件
-    redirect: '/personalInfo/index',
+    redirect: '/personalInfo/index', // 第一层如果需要用到layout布局组件，需要重定向到子组件
     children: [
       {
-        path: '/personalInfo/index',
+        path: '/personalInfo/index', // ***注意：此处为单层时，不能省略写法成 path:'index'
         name: 'personalInfo',
         meta: {
           title: '个人信息',
@@ -84,12 +81,11 @@ export const routes = [
   { 
     // 1级
     path: '/1', // 多级导航递归demo
-    hidden: true,
     component: () => import('./components/layout/Index.vue'), // 布局组件
     meta: {
       title: '多级导航demo',
     },
-    redirect:'/1/1',
+    redirect:'/1/1', // 第一层如果需要用到layout布局组件，需要重定向到子组件
     children: [
       // 2级,2个
       {
@@ -135,7 +131,7 @@ export const routes = [
                 meta: {
                   title: '1-1-1-3',
                 },
-                hidden:false,
+                hidden: true,
                 component: () => import('./views/Home.vue'),
                 children: [],
               },
@@ -179,9 +175,12 @@ export const routes = [
       },
     ]
   },
+
+  // 不需要布局顶栏&侧边导航栏的页面
   {
     path: '/register',
     name: 'register',
+    hidden: true,
     meta: {
       title: '注册',
       requireAuth: false, // 不需要登录访问
@@ -191,6 +190,7 @@ export const routes = [
   {
     path: '/login',
     name: 'login',
+    hidden: true,
     meta: {
       title: '登录',
       requireAuth: false, // 不需要登录访问
@@ -200,6 +200,7 @@ export const routes = [
   {
     path: '*',
     name: '/404',
+    hidden: true,
     meta: {
       title: '404',
       requireAuth: false, // 不需要登录访问

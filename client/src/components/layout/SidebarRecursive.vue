@@ -3,14 +3,15 @@
 //- .view(:style="{width:(isCollapse ? '' : '200px')}") 
 .view
   el-menu(:default-active="currentRoutePath" :collapse="isCollapse" router)
+    //- 不存在或者存在值为false
     template(
       v-for='item in $store.state.routes'
-      v-if="item.hidden"
+      v-if="!(item.hidden)" 
     )
       //- 存在一个子元素
-      el-menu-item(v-if='item.children.length==1' :index="item.children[0].path" :key='item.children[0].path')
+      el-menu-item(v-if='item.children&&item.children.length==1' :index="item.children[0].path" :key='item.children[0].path')
         i(v-if='item.children[0].meta.icon' :class='item.children[0].meta.icon')
-        i(v-if="!item.children[0].meta.icon&&isCollapse&&item.children[0].meta&&item.children[0].meta.title") {{item.children[0].meta.title.slice(0,2)}}
+        i(v-if="(!item.children[0].meta.icon)&&isCollapse&&item.children[0].meta&&item.children[0].meta.title") {{item.children[0].meta.title.slice(0,2)}}
         span(slot='title') {{item.children[0].meta.title}}
       //- 多个子元素
       el-submenu(v-else :index="item.path")

@@ -3,7 +3,10 @@
   el-submenu(:index="index")
     template(slot='title')
       span(v-if='navMenus.meta&&navMenus.meta.title') {{navMenus.meta.title}}
-    template(v-for="item in navMenus.children")
+    template(
+      v-for="item in navMenus.children"
+      v-if="!(item.hidden)"
+    )
       el-menu-item(
         v-if='!item.children || item.children.length === 0 '
         :index="index+ '/' + item.path"
