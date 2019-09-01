@@ -78,6 +78,21 @@ export const routes = [
       },
     ]
   },
+  {
+    path: '/userManage',
+    component: () => import('./components/layout/Index.vue'), // 布局组件
+    redirect: '/userManage/index', // 第一层如果需要用到layout布局组件，需要重定向到子组件
+    children: [
+      {
+        path: '/userManage/index', // ***注意：此处为单层时，不能省略写法成 path:'index'
+        name: 'userManage',
+        meta: {
+          title: '账户管理',
+        },
+        component: () => import('./views/UserManage.vue'),
+      },
+    ]
+  },
   { 
     // 1级
     path: '/1', // 多级导航递归demo
