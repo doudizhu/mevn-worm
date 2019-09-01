@@ -127,16 +127,55 @@ router.post(
     //   // res.json(result)
     // })
 
-    Collection(fields).save().then(data=>{
-      Collection.find()
-        .then(result=>{
-          if(!result){
-            return res.status(404).json('没有任何内容')
-          }
-          res.json(paginationFilter(result,param))
-        })
-        .catch(err=>res.status(404).json(err)) 
-    });
+    // Collection(fields).save().then(data=>{
+    //   Collection.find()
+    //     .then(result=>{
+    //       if(!result){
+    //         return res.status(404).json('没有任何内容')
+    //       }
+    //       res.json(paginationFilter(result,param))
+    //     })
+    //     .catch(err=>res.status(404).json(err)) 
+    // });
+
+    // 新增&注册融合
+    // 查询数据库中是否拥有邮箱
+    Collection.findOne({email:req.body.email})
+      .then(user=>{
+        if(user){
+          return res.status(400).json('邮箱已被注册！')
+        }else{
+          const avatar = gravatar.url('req.body.email', {s: '200', r: 'pg', d: 'mm'});
+
+          const newUser = new User({
+            name:req.body.name,
+            email:req.body.email,
+            password:req.body.password,
+            avatar,
+            identity:req.body.identity,
+          })
+
+          bcrypt.genSalt(10, function(err, salt) {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+                // Store hash in your password DB.
+                if(err) throw err;
+                newUser.password = hash
+                newUser.save()
+                  .then(data=>{
+                      Collection.find()
+                        .then(result=>{
+                          if(!result){
+                            return res.status(404).json('没有任何内容')
+                          }
+                          res.json(paginationFilter(result,param))
+                        })
+                        .catch(err=>res.status(404).json(err))
+                  })
+                  .catch(err=>console.log(err))
+            });
+          });
+        }
+      })
   }
 )
 
