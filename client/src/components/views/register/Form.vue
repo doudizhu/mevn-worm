@@ -19,7 +19,7 @@
     //-   el-select(v-model='ruleForm.identity' placeholder='请选择身份')
     //-     el-option(label='管理员' value='manager')
     //-     el-option(label='员工' value='employee')
-    el-form-item(prop="identity" label='身份')
+    el-form-item(prop="identity" label='角色')
       el-select(v-model='ruleForm.identity')
         el-option(
           v-for="option in optionIdentity" 
@@ -74,11 +74,11 @@ export default class ViewComponent extends Mixins(ValidateMixin) {
   }
   // 辅助静态展示信息
   optionIdentity = [
-    {
-      key: 'admin',
-      role: '管理员',
-      des: 'Super Administrator. Have access to view all pages.',
-    },
+    // {
+    //   key: 'admin',
+    //   role: '管理员',
+    //   des: 'Super Administrator. Have access to view all pages.',
+    // },
     {
       key: "editor",
       role: "编辑",

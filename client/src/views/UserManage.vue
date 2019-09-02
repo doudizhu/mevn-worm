@@ -147,6 +147,12 @@ export default class ViewComponent extends Vue {
           message:'新增成功',
           type: 'success'
         })
+        data.results.forEach((item:any)=>{
+          // 设置编辑状态
+          item.edit = false
+          // 身份描述字段
+          item.des = (this.getRoleObj(item.identity) as any).des
+        })
         this.propTable.tableData = data.results
       }
       else if(method=='delete'){ // 删 *待定：是否也后台拉取数据更新页面
@@ -164,10 +170,9 @@ export default class ViewComponent extends Vue {
         })
       }
       else if(method=='get'){ // 查
-        // 设置编辑状态
         data.results.forEach((item:any)=>{
+          // 设置编辑状态
           item.edit = false
-
           // 身份描述字段
           item.des = (this.getRoleObj(item.identity) as any).des
         })
