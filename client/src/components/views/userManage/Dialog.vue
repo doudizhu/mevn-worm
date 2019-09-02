@@ -17,11 +17,11 @@
       el-form-item(prop="passwordConfirm" label='确认密码')
         el-input(v-model='ruleForm.passwordConfirm' type="password" placeholder='6~20位字母、数字或英文符号组合，区分大小写')
       el-form-item(prop="identity" label='身份')
-        el-select(v-model='ruleForm.identity')
+        el-select(v-model='ruleForm.identity' @change='changeSelect')
           el-option(
             v-for="option in optionIdentity" 
             :label="option.role"
-            :value="option.role"
+            :value="option.key"
             :key="option.key"
           )  
       el-form-item
@@ -45,7 +45,10 @@ export default class ViewComponent extends Mixins(ValidateMixin) {
   set visible(val) {
     this.$emit('update:isShow', val);
   }
-  
+  changeSelect(){
+    console.log('this.ruleForm.identity:',this.ruleForm.identity)
+  }
+
   /* data */
   ruleForm = {
     name:'',

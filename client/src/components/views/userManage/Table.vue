@@ -62,14 +62,16 @@ el-form(@submit.prevent='onSubmit'
         )
           el-select(v-if='scope.row.edit'
             v-model='scope.row.identity'
+            @change='changeSelect(scope.row)'
           )
             el-option(
               v-for="option in optionIdentity" 
               :label="option.role"
-              :value="option.role"
+              :value="option.key"
               :key="option.key"
             ) 
-        span(v-else) {{scope.row.identity}}
+        span(v-else) {{getRoleObj(scope.row.identity).role}}
+    el-table-column(prop='des' label='描述' width='180')
     el-table-column(
       prop='avatar'
       label='头像'
@@ -147,6 +149,19 @@ export default class ViewComponent extends Vue {
   handleEditInline(index:number,row:any){
     // 编辑
     row.edit = true
+  }
+  changeSelect(row:any){
+    row.des = (this.getRoleObj(row.identity) as any).des
+  }
+  getRoleObj(role:string){
+    let roleObj = {}
+    this.optionIdentity.some((item:any)=>{
+      if(item.key == role){
+        roleObj = item;
+        return true;
+      }
+    })
+    return roleObj
   }
   handleEditInlineSave(index:number,row:any){
     (this.$refs['ruleForm'] as any).validate((valid: boolean) => {

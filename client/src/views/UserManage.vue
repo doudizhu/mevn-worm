@@ -167,11 +167,42 @@ export default class ViewComponent extends Vue {
         // 设置编辑状态
         data.results.forEach((item:any)=>{
           item.edit = false
+
+          // 身份描述字段
+          item.des = (this.getRoleObj(item.identity) as any).des
         })
         this.propTable.tableData = data.results
       }
     }
   }
 
+  // 辅助静态展示信息
+  optionIdentity = [
+    {
+      key: 'admin',
+      role: '管理员',
+      des: 'Super Administrator. Have access to view all pages.',
+    },
+    {
+      key: "editor",
+      role: "编辑",
+      des: "Normal Editor. Can see all pages except permission page"
+    },
+    {
+      key: "visitor",
+      role: "游客",
+      des: "Just a visitor. Can only see the home page and the document page"
+    },
+  ]
+  getRoleObj(role:string){
+    let roleObj = {}
+    this.optionIdentity.some((item:any)=>{
+      if(item.key == role){
+        roleObj = item;
+        return true;
+      }
+    })
+    return roleObj
+  }
 }
 </script>
