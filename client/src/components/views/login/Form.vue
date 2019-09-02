@@ -34,7 +34,7 @@ export default class ViewComponent extends Mixins(ValidateMixin) {
     email:'',
     password:'',
     passwordConfirm:'',
-    identity:'',
+    role:'',
   }
   rules = {
     email:[

@@ -151,7 +151,7 @@ export default class ViewComponent extends Vue {
           // 设置编辑状态
           item.edit = false
           // 身份描述字段
-          item.des = (this.getRoleObj(item.identity) as any).des
+          item.des = (this.getRoleObj(item.role) as any).des
         })
         this.propTable.tableData = data.results
       }
@@ -174,7 +174,7 @@ export default class ViewComponent extends Vue {
           // 设置编辑状态
           item.edit = false
           // 身份描述字段
-          item.des = (this.getRoleObj(item.identity) as any).des
+          item.des = (this.getRoleObj(item.role) as any).des
         })
         this.propTable.tableData = data.results
       }
@@ -182,7 +182,7 @@ export default class ViewComponent extends Vue {
   }
 
   // 辅助静态展示信息
-  optionIdentity = [
+  optionRole = [
     {
       key: 'admin',
       role: '管理员',
@@ -201,7 +201,7 @@ export default class ViewComponent extends Vue {
   ]
   getRoleObj(role:string){
     let roleObj = {}
-    this.optionIdentity.some((item:any)=>{
+    this.optionRole.some((item:any)=>{
       if(item.key == role){
         roleObj = item;
         return true;

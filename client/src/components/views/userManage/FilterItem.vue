@@ -25,9 +25,9 @@
         placeholder='请选择结束时间'
       )
     el-form-item(label='身份')
-      el-select(v-model='ruleForm.identity' @change='submitForm("ruleForm")' clearable)
+      el-select(v-model='ruleForm.role' @change='submitForm("ruleForm")' clearable)
         el-option(
-          v-for="option in optionIdentity" 
+          v-for="option in optionRole" 
           :label="option.role"
           :value="option.role"
           :key="option.key"
@@ -59,7 +59,7 @@ export default class ViewComponent extends Vue {
   allName = []
   timeout:any = null
   // 辅助静态展示信息
-  optionIdentity = [
+  optionRole = [
     {
       key: 'admin',
       role: '管理员',

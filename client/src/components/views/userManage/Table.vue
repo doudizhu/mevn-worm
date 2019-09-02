@@ -50,27 +50,27 @@ el-form(@submit.prevent='onSubmit'
           )
         span(v-else) {{scope.row.email}}
     el-table-column(
-      prop='identity'
+      prop='role'
       label='身份'
       align='center'
     )
       template(slot-scope='scope')
         el-form-item(v-if='scope.row.edit'
           label=''
-          :prop="'tableData.'+scope.$index+'.identity'"
+          :prop="'tableData.'+scope.$index+'.role'"
           :rules=`{message:'不能为空',trigger:'blur',required: true,}`
         )
           el-select(v-if='scope.row.edit'
-            v-model='scope.row.identity'
+            v-model='scope.row.role'
             @change='changeSelect(scope.row)'
           )
             el-option(
-              v-for="option in optionIdentity" 
+              v-for="option in optionRole" 
               :label="option.role"
               :value="option.key"
               :key="option.key"
             ) 
-        span(v-else) {{getRoleObj(scope.row.identity).role}}
+        span(v-else) {{getRoleObj(scope.row.role).role}}
     el-table-column(prop='des' label='描述' width='180')
     el-table-column(
       prop='avatar'
@@ -107,7 +107,7 @@ export default class ViewComponent extends Vue {
 
   /**data */
   // 辅助静态展示信息
-  optionIdentity = [
+  optionRole = [
     {
       key: 'admin',
       role: '管理员',
@@ -151,11 +151,11 @@ export default class ViewComponent extends Vue {
     row.edit = true
   }
   changeSelect(row:any){
-    row.des = (this.getRoleObj(row.identity) as any).des
+    row.des = (this.getRoleObj(row.role) as any).des
   }
   getRoleObj(role:string){
     let roleObj = {}
-    this.optionIdentity.some((item:any)=>{
+    this.optionRole.some((item:any)=>{
       if(item.key == role){
         roleObj = item;
         return true;

@@ -16,10 +16,10 @@
         el-input(v-model='ruleForm.password' type="password" placeholder='6~20位字母、数字或英文符号组合，区分大小写')
       el-form-item(prop="passwordConfirm" label='确认密码')
         el-input(v-model='ruleForm.passwordConfirm' type="password" placeholder='6~20位字母、数字或英文符号组合，区分大小写')
-      el-form-item(prop="identity" label='身份')
-        el-select(v-model='ruleForm.identity' @change='changeSelect')
+      el-form-item(prop="role" label='身份')
+        el-select(v-model='ruleForm.role' @change='changeSelect')
           el-option(
-            v-for="option in optionIdentity" 
+            v-for="option in optionRole" 
             :label="option.role"
             :value="option.key"
             :key="option.key"
@@ -46,7 +46,7 @@ export default class ViewComponent extends Mixins(ValidateMixin) {
     this.$emit('update:isShow', val);
   }
   changeSelect(){
-    console.log('this.ruleForm.identity:',this.ruleForm.identity)
+    console.log('this.ruleForm.role:',this.ruleForm.role)
   }
 
   /* data */
@@ -55,7 +55,7 @@ export default class ViewComponent extends Mixins(ValidateMixin) {
     email:'',
     password:'',
     passwordConfirm:'',
-    identity:'',
+    role:'',
   }
   rules = {
     name:[
@@ -76,10 +76,10 @@ export default class ViewComponent extends Mixins(ValidateMixin) {
       {message:'不能为空',trigger:'blur',required: true,},
       {validator: this.pwdConfirm(this), trigger: 'blur'},
     ],
-    identity:{message:'不能为空',trigger:'blur',required: true,},
+    role:{message:'不能为空',trigger:'blur',required: true,},
   }
   // 辅助静态展示信息
-  optionIdentity = [
+  optionRole = [
     {
       key: 'admin',
       role: '管理员',

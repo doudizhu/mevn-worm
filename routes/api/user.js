@@ -35,7 +35,7 @@ router.post('/register',(req,res)=>{
           email:req.body.email,
           password:req.body.password,
           avatar,
-          identity:req.body.identity,
+          role:req.body.role,
         })
 
 
@@ -77,7 +77,7 @@ router.post('/login',(req,res)=>{
               id:user.id,
               name:user.name,
               avatar: user.avatar,
-              identity: user.identity
+              role: user.role
             }
 
             // jwt.sign('规则','加密名字','过期时间','箭头函数')
@@ -103,7 +103,7 @@ router.get('/current',passport.authenticate('jwt',{session:false}),(req,res) => 
     id:req.user.id,
     name:req.user.name,
     email:req.user.email,
-    identity:req.user.identity,
+    role:req.user.role,
   })
 })
 
@@ -152,7 +152,7 @@ router.post(
             email:req.body.email,
             password:req.body.password,
             avatar,
-            identity:req.body.identity,
+            role:req.body.role,
           })
 
           bcrypt.genSalt(10, function(err, salt) {
@@ -256,9 +256,9 @@ router.get( // 全部
             const endTime = (new Date(filterFields.collected__date__lte)).getTime();
             items = items.filter((item)=>(new Date(item.date)).getTime() <= endTime)
           }
-          if(filterFields.identity){
-            const identity = filterFields.identity
-            items = items.filter((item)=>item.identity === identity)
+          if(filterFields.role){
+            const role = filterFields.role
+            items = items.filter((item)=>item.role === role)
           }
 
           res.json(paginationFilter(items,param))
