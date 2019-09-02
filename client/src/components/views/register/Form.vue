@@ -24,7 +24,7 @@
         el-option(
           v-for="option in optionIdentity" 
           :label="option.role"
-          :value="option.role"
+          :value="option.key"
           :key="option.key"
         )  
     el-form-item
