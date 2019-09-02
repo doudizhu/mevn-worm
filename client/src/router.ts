@@ -23,6 +23,9 @@ export const routes = [
   // },
   {
     path: '/',
+    meta:{
+      roles:['admin','editor'] // admin&editor&visitor
+    },
     component: () => import('./components/layout/Index.vue'), // 布局组件
     redirect: '/dashboard', // 第一层如果需要用到layout布局组件，需要重定向到子组件
     children: [
@@ -80,6 +83,9 @@ export const routes = [
   },
   {
     path: '/userManage',
+    meta:{
+      roles:['admin'],
+    },
     component: () => import('./components/layout/Index.vue'), // 布局组件
     redirect: '/userManage/index', // 第一层如果需要用到layout布局组件，需要重定向到子组件
     children: [
@@ -88,17 +94,19 @@ export const routes = [
         name: 'userManage',
         meta: {
           title: '账户管理',
+          roles:['admin'],
         },
         component: () => import('./views/UserManage.vue'),
       },
     ]
   },
-  { 
+  {
     // 1级
     path: '/1', // 多级导航递归demo
     component: () => import('./components/layout/Index.vue'), // 布局组件
     meta: {
       title: '多级导航demo',
+      roles:['admin'],
     },
     redirect:'/1/1', // 第一层如果需要用到layout布局组件，需要重定向到子组件
     children: [
@@ -123,7 +131,7 @@ export const routes = [
             },
             component: { render (c:any) { return c('router-view') }},
             children: [
-              // 4级，4个（2号无children,3号隐藏，4号含子式）
+              // 4级，4个（2号无children,3号隐藏，4号含子式，5号仅管理员和编辑权限可访问）
               {
                 path: '1',
                 meta: {
@@ -165,6 +173,14 @@ export const routes = [
                     component: () => import('./views/Home.vue'),
                   },
                 ],
+              },
+              {
+                path: '5',
+                meta: {
+                  title: '1-1-1-5',
+                  roles:['admin','editor'],
+                },
+                component: { render (c:any) { return c('router-view') }},
               },
             ],
           },

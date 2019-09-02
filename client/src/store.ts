@@ -65,6 +65,13 @@ export default new Vuex.Store({
     },
     setUser({commit},user){
       commit(types.SET_USER,user)
+
+      const {role} = user
+      // 返回当前用户拥有权限的路由
+      console.log('routes',routes)
+      const routesPermission = filterRoutesPermission(routes,role)
+      console.log('routesPermission',routesPermission)
+      commit('SET_ROUTES',routesPermission)
     },
   },
   getters:{
@@ -75,3 +82,34 @@ export default new Vuex.Store({
     createPersistedState(),
   ],
 })
+
+/**
+ * 递归过滤异步路由表，返回符合用户角色权限的路由表
+ * @param routes 所有路由表
+ * @param role 当前角色
+ */
+function filterRoutesPermission(routes:Array<any>,role:string){
+  const routesPermission = routes.filter(route=>{
+    if(hasPermission(route,role)){ // 是否有权限 
+      if(route.children && route.children.length ){
+        route.children = filterRoutesPermission(route.children,role)
+      }
+      return true;
+    }
+    return false;
+  })
+
+  return routesPermission;
+}
+/**
+ * 判断是否有权限
+ * @param roles 当前角色
+ * @param route 当前路由对象
+ */
+function hasPermission(route:any,role:string){
+  if(route.meta && route.meta.roles) {// 是否meta.roles包含角色的key值，如果包含那么就是有权限，否则无权限
+    return (route.meta.roles.indexOf(role) >= 0);
+  }else{ // 默认不设置有权限
+    return true;
+  }
+}

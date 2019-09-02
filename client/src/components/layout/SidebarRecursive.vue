@@ -50,8 +50,8 @@ export default class ViewComponent extends Vue {
     this.isCollapse = this.$store.state.isCollapseSidebar
   };
 
-  created(){
-    this.$store.dispatch('setRoutes'); // 初始化导航栏vuex数据routes
-  }
+  // created(){
+  //   this.$store.dispatch('setRoutes'); // 初始化导航栏vuex数据routes
+  // }
 }
 </script>
