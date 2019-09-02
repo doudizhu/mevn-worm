@@ -32,3 +32,41 @@ export class ValidateMixin extends Vue {
     }
   }
 }
+
+@Component
+export class FormatMixin extends Vue {
+  /* data 初始化数据: 数据改为属性的形式 */
+  // uuid: string = '123'
+  /* method 方法: 方法就不用再写在methods里了，直接以类方法形式书写 */
+  // 密码
+  getDateTime(timeStr:string){
+    const self = new Date(timeStr);
+    let format = "yyyy-MM-dd hh:mm:ss";
+
+    /*
+    * eg:format="yyyy-MM-dd hh:mm:ss";
+    */  
+   let o:any = {  
+       "M+" : self.getMonth() + 1, // month  
+       "d+" : self.getDate(), // day  
+       "h+" : self.getHours(), // hour  
+       "m+" : self.getMinutes(), // minute  
+       "s+" : self.getSeconds(), // second  
+       "q+" : Math.floor((self.getMonth() + 3) / 3), // quarter  
+       "S" : self.getMilliseconds()  
+       // millisecond  
+   }  
+   if (/(y+)/.test(format)) {  
+       format = format.replace(RegExp.$1, (self.getFullYear() + "").substr(4  
+                       - RegExp.$1.length));  
+   }  
+   for (var k in o) {  
+       if (new RegExp("(" + k + ")").test(format)) {  
+           format = format.replace(RegExp.$1, RegExp.$1.length == 1  
+                           ? o[k]  
+                           : ("00" + o[k]).substr(("" + o[k]).length));  
+       }  
+   }  
+   return format; 
+  }
+}

@@ -44,6 +44,8 @@
       label='最后采集时间'
       align='center'
     )
+      template(slot-scope='scope')
+        span {{getDateTime(scope.row.collected)}}
     el-table-column(v-if='$store.state.user.role !== "visitor"' label='操作' align='center' fixed='right' width='180')
       template(slot-scope='scope')
         el-button(@click='handleEdit(scope.$index, scope.row)' size='small' type='warning' icon='edit') 编辑
@@ -51,11 +53,12 @@
 </template>
 
 <script lang="ts">
-import {Component,Vue,Prop} from 'vue-property-decorator'
+import {Component,Vue,Prop,Mixins} from 'vue-property-decorator'
+import {FormatMixin} from '@/assets/mixin'
 @Component({
   components:{}
 })
-export default class ViewComponent extends Vue {
+export default class ViewComponent extends Mixins(FormatMixin) {
   /* prop */
   @Prop() prop!: any; // 父组件传值
 
