@@ -75,6 +75,12 @@ export default class ViewComponent extends Vue {
     }
     // 点击“编辑”按钮
     if(response.method == 'patch'){
+      if(response.mode == 'editInline'){ // 如果是行内编辑直接发送更新请求
+        delete response.mode
+        this.requestApi(response);
+        return;
+      }
+
       this.propDialog = response
       this.isShowDialog = true
     }
@@ -132,10 +138,6 @@ export default class ViewComponent extends Vue {
 
     if(response.status >= 200 && response.status < 300){
       const data = response.data
-      // 设置编辑状态
-      data.results.forEach((item:any)=>{
-        item.edit = false
-      })
       if(data.pagination){
         this.propPagination.pagination.total = data.pagination.total
       }
@@ -162,6 +164,10 @@ export default class ViewComponent extends Vue {
         })
       }
       else if(method=='get'){ // 查
+        // 设置编辑状态
+        data.results.forEach((item:any)=>{
+          item.edit = false
+        })
         this.propTable.tableData = data.results
       }
     }
