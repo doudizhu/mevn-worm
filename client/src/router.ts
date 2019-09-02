@@ -23,9 +23,6 @@ export const routes = [
   // },
   {
     path: '/',
-    meta:{
-      roles:['admin','editor'] // admin&editor&visitor
-    },
     component: () => import('./components/layout/Index.vue'), // 布局组件
     redirect: '/dashboard', // 第一层如果需要用到layout布局组件，需要重定向到子组件
     children: [
@@ -258,7 +255,13 @@ router.beforeEach((to,from,next)=>{
   } 
   else { // 需要登录访问
     if (store.state.eleToken) { // 含有token
-      next()
+      // 权限判断
+      const role = (store.state.user as any).role
+      if(hasPermission(to,role)){
+        next()
+      }else{
+        next('/404') // 没有权限进入
+      }
     } else {
       next()
       Message.error('登录状态失效，请重新登录');
@@ -272,3 +275,17 @@ router.beforeEach((to,from,next)=>{
 })
 
 export default router
+
+
+/**
+ * 判断是否有权限
+ * @param roles 当前角色
+ * @param route 当前路由对象
+ */
+function hasPermission(route:any,role:string){
+  if(route.meta && route.meta.roles) {// 是否meta.roles包含角色的key值，如果包含那么就是有权限，否则无权限
+    return (route.meta.roles.indexOf(role) >= 0);
+  }else{ // 默认不设置有权限
+    return true;
+  }
+}
