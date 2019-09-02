@@ -132,6 +132,10 @@ export default class ViewComponent extends Vue {
 
     if(response.status >= 200 && response.status < 300){
       const data = response.data
+      // 设置编辑状态
+      data.results.forEach((item:any)=>{
+        item.edit = false
+      })
       if(data.pagination){
         this.propPagination.pagination.total = data.pagination.total
       }
