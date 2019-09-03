@@ -68,9 +68,9 @@ export default new Vuex.Store({
 
       const {role} = user
       // 返回当前用户拥有权限的路由
-      console.log('routes',routes)
+      // console.log('routes',routes)
       const routesPermission = filterRoutesPermission(routes,role)
-      console.log('routesPermission',routesPermission)
+      // console.log('routesPermission',routesPermission)
       commit('SET_ROUTES',routesPermission)
     },
   },

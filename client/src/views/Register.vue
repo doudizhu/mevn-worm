@@ -32,7 +32,7 @@ export default class ViewComponent extends Vue {
   // 执行方法
   async request(conf:any){
     const response = await this.$request(conf)
-    console.log('response',response)
+    // console.log('response',response)
     if(response.status >= 200 && response.status < 300){
       this.$message({
         message:'注册成功',
