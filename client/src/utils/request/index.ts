@@ -38,6 +38,7 @@ service.interceptors.response.use(
     return response;
   },
   (err: any) => {
+    loadingInstance.close() // 关闭请求中弹窗
     let errMsg = ''
     if(err && err.response.status){
       switch (err.response.status) {
@@ -79,7 +80,7 @@ service.interceptors.response.use(
           break;
 
         default:
-          errMsg = err.response.data.msg;
+          errMsg = err.response.data;
           break;
       }
     } else { // 非http请求错误
@@ -88,7 +89,8 @@ service.interceptors.response.use(
 
     if(errMsg){
       Message.error(errMsg)
-      return Promise.reject(Message)
+      // return Promise.reject(errMsg)
+      return err.response
     }
   }
 )

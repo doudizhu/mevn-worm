@@ -178,6 +178,8 @@ export default class ViewComponent extends Vue {
         })
         this.propTable.tableData = data.results
       }
+    }else {
+      console.log('err.response.data:',response.data)
     }
   }
 

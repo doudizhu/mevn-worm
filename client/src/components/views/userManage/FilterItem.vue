@@ -29,7 +29,7 @@
         el-option(
           v-for="option in optionRole" 
           :label="option.role"
-          :value="option.role"
+          :value="option.key"
           :key="option.key"
         )
     //- 操作按钮
