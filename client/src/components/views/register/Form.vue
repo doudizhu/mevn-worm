@@ -10,7 +10,12 @@
     el-form-item(prop="name" label='用户名')
       el-input(v-model='ruleForm.name' autofocus placeholder='长度在2到30个字符之间')
     el-form-item(prop="email" label='邮箱')
-      el-input(v-model='ruleForm.email' type='email')
+      //- el-input(v-model='ruleForm.email' type='email')
+      el-autocomplete(
+        v-model.trim="ruleForm.email"
+        :fetch-suggestions="emailSearch"
+        placeholder='请输入正确格式的邮箱'
+      )
     el-form-item(prop="password" label='密码')
       el-input(v-model='ruleForm.password' type="password" placeholder='6~20位字母、数字或英文符号组合，区分大小写')
     el-form-item(prop="passwordConfirm" label='确认密码')
@@ -35,11 +40,11 @@
 
 <script lang="ts">
 import {Component,Vue,Prop, Mixins} from 'vue-property-decorator'
-import {ValidateMixin} from '@/assets/mixin'
+import {ValidateMixin,EmailSearchMixin} from '@/assets/mixin'
 @Component({
   components:{}
 })
-export default class ViewComponent extends Mixins(ValidateMixin) {
+export default class ViewComponent extends Mixins(ValidateMixin,EmailSearchMixin) {
   /* prop */
   // @Prop() prop!: any; // 父组件传值
 
@@ -137,6 +142,9 @@ export default class ViewComponent extends Mixins(ValidateMixin) {
 		margin 120px auto 0;
     .el-form-item{
       padding-right 120px
+      .el-autocomplete{
+        width 100%
+      }
     }
     >h2{
       text-align center

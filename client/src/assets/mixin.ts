@@ -70,3 +70,12 @@ export class FormatMixin extends Vue {
    return format; 
   }
 }
+
+
+import { emailSearch } from '@/utils/email'
+@Component
+export class EmailSearchMixin extends Vue {
+  /* data 初始化数据: 数据改为属性的形式 */
+  emailSearch = emailSearch
+  /* method 方法: 方法就不用再写在methods里了，直接以类方法形式书写 */
+}
