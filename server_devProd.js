@@ -3,9 +3,12 @@ const app = express()
 const path = require('path')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const passport = require('passport')
 
 // 引入api
 const sourceInfos = require('./routes/api/sourceInfos')
+const rulesConfig = require('./routes/api/rulesConfig')
+const user = require('./routes/api/user')
 
 const db = require('./config/keys').mongoURI
 console.log(db)
@@ -17,9 +20,10 @@ mongoose
   .then(()=>{console.log('MongoDB Connected')})
   .catch(err=>console.log(err))
 
-app.get('/',(req,res)=>{
-  res.send('Hello World!')
-})
+
+// app.get('/',(req,res)=>{
+//   res.send('Hello World!')
+// })
 
 // 使用body-parser中间件
 // ***注意:需要放在接口调用之前，否则数据为undifine
@@ -32,14 +36,19 @@ app.use((req,res,next)=>{
     'Access-Control-Allow-Methods':'GET,POST,PUT,PATCH,DELETE',
 
     "Access-Control-Allow-Credentials": "true",
-    "Access-Control-Allow-Headers": "Content-Type,Access-Token",
+    "Access-Control-Allow-Headers": "*",
     "Access-Control-Expose-Headers": "*",
   });
   next();
 })
+// passport 初始化
+app.use(passport.initialize());
+require('./config/passport')(passport)
 
 // 使用routes
 app.use('/api/sourceInfos',sourceInfos)
+app.use('/api/rulesConfig',rulesConfig)
+app.use('/api/user',user)
 
 
 // 执行前端静态页面
