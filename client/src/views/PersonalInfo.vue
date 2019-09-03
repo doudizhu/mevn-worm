@@ -2,7 +2,7 @@
 .view
   img(:src='$store.state.user.avatar')
   p {{$store.state.user.name}}
-  p {{$store.state.user.role === 'manager' ? '管理员' : '无管理员权限'}}
+  p {{$store.state.user.role === 'admin' ? '管理员' : '无管理员权限'}}
 </template>
 
 <script lang="ts">

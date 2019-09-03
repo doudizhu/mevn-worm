@@ -77,6 +77,8 @@ el-form(@submit.prevent='onSubmit'
       label='头像'
       align='center'
     )
+      template(slot-scope='scope')
+        img(:src='scope.row.avatar' style='max-width:100%;')
     el-table-column(
       prop='date'
       label='注册时间'
@@ -85,7 +87,7 @@ el-form(@submit.prevent='onSubmit'
       template(slot-scope='scope')
         span {{getDateTime(scope.row.date)}}
     el-table-column(label='操作' align='center' fixed='right' width='180')
-      template(slot-scope='scope')
+      template(slot-scope='scope' v-if='scope.row.name !== "admin" && scope.row.name !== "doudizhu"')
         el-button(v-if='!scope.row.edit' @click='handleEditInline(scope.$index, scope.row)' size='small' type='warning' icon='edit') 编辑
         el-button(v-else @click='handleEditInlineSave(scope.$index,scope.row)' type='success' size='mini') 保存
         el-button(@click='handleDelete(scope.$index, scope.row)' size='small' type='danger' icon='delete') 删除
