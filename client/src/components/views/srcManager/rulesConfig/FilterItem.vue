@@ -3,7 +3,11 @@
   el-form(ref='ruleForm' :model="ruleForm" :rules='rules' :inline='true' )
     el-form-item(label='规则名称')
       //- el-input(v-model='ruleForm.name')
-      FuzzySearch(
+      //- FuzzySearch(
+      //-   v-model='ruleForm.name'
+      //-   :prop="{api:'rulesConfig',searchField:'name'}"
+      //- )
+      FuzzySearchOnce(
         v-model='ruleForm.name'
         :prop="{api:'rulesConfig',searchField:'name'}"
       )
@@ -33,10 +37,10 @@
 
 <script lang="ts">
 import {debounce} from '@/utils'
-import {FuzzySearch} from '@/components/widgets';
+import {FuzzySearch,FuzzySearchOnce} from '@/components/widgets';
 import {Component,Vue,Prop,Watch} from 'vue-property-decorator'
 @Component({
-  components:{FuzzySearch,}
+  components:{FuzzySearch,FuzzySearchOnce,}
 })
 export default class ViewComponent extends Vue {
   /* prop */
