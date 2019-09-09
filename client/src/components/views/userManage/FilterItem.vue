@@ -125,7 +125,7 @@ export default class ViewComponent extends Vue {
     this.timeout = setTimeout(async () => {
       // cb(results);
       const response = await this.$request({
-        api:'/user/',
+        api:'user',
         data:{
           querySearchField:'name',
           querySearchValue:this.ruleForm.name,

@@ -52,7 +52,7 @@ export default class ViewComponent extends Vue {
     this.timeout = setTimeout(async () => {
       // cb(results);
       const response = await this.$request({
-        api:'/'+this.prop.api+'/',
+        api:this.prop.api,
         data:{
           querySearchField:this.prop.searchField,
           querySearchValue:this.value,

@@ -82,7 +82,7 @@ export default class ViewComponent extends Vue {
     this.timeout = setTimeout(async () => {
       // cb(results);
       const response = await this.$request({
-        api:'/sourceInfos/',
+        api:'sourceInfos',
         data:{
           querySearchField:'name',
           querySearchValue:this.ruleForm.name,
@@ -105,7 +105,7 @@ export default class ViewComponent extends Vue {
   }
   async loadAllName(){
     const response = await this.$request({
-      api:'/sourceInfos/',
+      api:'sourceInfos',
       data:{
         querySearchField:'name',
       },

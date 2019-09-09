@@ -26,7 +26,7 @@ export default class ViewComponent extends Vue {
     // 点击“注册”按钮
     const data = response.data
     this.request({
-      api:'/user/login',
+      api:'user/login',
       data,
       method:'post'
     })

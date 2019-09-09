@@ -121,7 +121,7 @@ export default function request(options:any) {
 
   return (service as any)[method](
     // url
-    url || store.state.domainApi + api,
+    url || store.state.domainApi + '/' + api,
     // param
     method == 'get' ? {params:data} : data
 )

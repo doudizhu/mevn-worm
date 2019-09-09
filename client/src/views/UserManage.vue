@@ -131,7 +131,7 @@ export default class ViewComponent extends Vue {
     const response = await this.$request({
       // url: 'http://goodhope-spider-manage.herokuapp.com/api/extend/source-info/',
       // url: 'http://localhost:5000/api/sourceInfos/'+id,
-      api: '/user/'+id,
+      api: 'user'+'/'+id,
       data,
       method,
     })

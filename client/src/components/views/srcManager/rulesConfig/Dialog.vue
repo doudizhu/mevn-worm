@@ -93,7 +93,7 @@ export default class MyComponent extends Vue {
           const errors: string[] = [];
 
           const response = await this.$request({ // 模糊搜索全部
-            api:'/sourceInfos/',
+            api:'sourceInfos',
             data:{
               querySearchField:'name',
               querySearchValue:value,
@@ -180,7 +180,7 @@ export default class MyComponent extends Vue {
   }
   async loadAllName(){
     const response = await this.$request({ // 模糊搜索全部
-      api:'/sourceInfos/',
+      api:'sourceInfos',
       data:{
         querySearchField:'name',
         querySearchValue:'',
