@@ -22,7 +22,8 @@ export const routes = [
   //   component: Home
   // },
   {
-    path: '/',
+    // path: '/', 
+    path: '', // github预览页不能定位到根路径'/'
     component: () => import('./components/layout/Index.vue'), // 布局组件
     redirect: '/dashboard', // 第一层如果需要用到layout布局组件，需要重定向到子组件
     children: [

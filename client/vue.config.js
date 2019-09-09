@@ -1,6 +1,7 @@
 // 生产环境：配置github预览页
+// 对应命令：npm run build -- --git
 const procetName = require('../package.json').name
-const prodConfigGit = process.env.NODE_ENV === 'production' && process.argv[3].slice(2) === 'git'
+const prodConfigGit = process.env.NODE_ENV === 'production' && process.argv[3] && process.argv[3].slice(2) === 'git'
 ? {
   publicPath: `https://doudizhu.github.io/${procetName}/client/dist/`, // github预览时：相对路径，深入切换页面时，加载资源文件路径会有缺失问题
 }
