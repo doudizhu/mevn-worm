@@ -50,7 +50,8 @@
       align='center'
     )
       template(slot-scope='scope')
-        span {{getDateTime(scope.row.collected)}}
+        //- span {{getDateTime(scope.row.collected)}}
+        span {{scope.row.collected | dateTime}}
     el-table-column(v-if='$store.state.user.role !== "visitor"' label='操作' align='center' fixed='right' width='180')
       template(slot-scope='scope')
         el-button(@click='handleEdit(scope.$index, scope.row)' size='small' type='warning' icon='edit') 编辑

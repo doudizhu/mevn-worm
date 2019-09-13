@@ -1,3 +1,5 @@
+let that:any;
+
 import { Vue, Component } from 'vue-property-decorator'
 @Component
 export class ValidateMixin extends Vue {
@@ -33,8 +35,27 @@ export class ValidateMixin extends Vue {
   }
 }
 
-@Component
+@Component({
+  components:{},
+  // /**filter */
+  filters: {
+    dateTime(value: string){ 
+      return that.getDateTime(value)
+    },
+  },
+  directives:{
+    // rainbow:{
+    //   bind(el,binding,value){
+    //     el.style.color = '#'+Math.random().toString(16).slice(2,8)
+    //   },
+    // },
+  }
+})
 export class FormatMixin extends Vue {
+  /**life hook */
+  beforeCreate(){
+    that = this;
+  }
   /* data 初始化数据: 数据改为属性的形式 */
   // uuid: string = '123'
   /* method 方法: 方法就不用再写在methods里了，直接以类方法形式书写 */

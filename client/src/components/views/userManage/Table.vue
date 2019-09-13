@@ -85,7 +85,8 @@ el-form(@submit.prevent='onSubmit'
       align='center'
     )
       template(slot-scope='scope')
-        span {{getDateTime(scope.row.date)}}
+        //- span {{getDateTime(scope.row.date)}}
+        span {{scope.row.date | dateTime}}
     el-table-column(label='操作' align='center' fixed='right' width='180')
       template(slot-scope='scope' v-if='scope.row.name !== "admin" && scope.row.name !== "doudizhu"')
         el-button(v-if='!scope.row.edit' @click='handleEditInline(scope.$index, scope.row)' size='small' type='warning' icon='edit') 编辑
