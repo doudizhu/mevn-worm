@@ -264,7 +264,7 @@ router.beforeEach((to,from,next)=>{
         next('/404') // 没有权限进入
       }
     } else {
-      next()
+      // next()
       Message.error('登录状态失效，请重新登录');
       store.commit('resetAll')
       next({

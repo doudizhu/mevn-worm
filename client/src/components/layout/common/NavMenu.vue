@@ -1,7 +1,7 @@
 <template lang="pug">
 .view
   el-submenu(:index="index")
-    template(slot='title')
+    template(slot='title' v-if="!(navMenus.hidden)")
       span(v-if='navMenus.meta&&navMenus.meta.title') {{navMenus.meta.title}}
     template(
       v-for="item in navMenus.children"

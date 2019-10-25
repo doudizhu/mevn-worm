@@ -15,11 +15,11 @@
         span(slot='title') {{item.children[0].meta.title}}
       //- 多个子元素
       el-submenu(v-else :index="item.path")
-        template(slot='title')
+        template(slot='title' v-if='!item.hidden')
           i(v-if='item.meta.icon' :class='item.meta.icon')
           i(v-if="!item.meta.icon&&isCollapse&&item.meta&&item.meta.title") {{item.meta.title.slice(0,2)}}
           span(v-if='item.meta&&item.meta.title' slot='title') {{item.meta.title}}
-        template(v-for="cItem in item.children")  
+        template(v-for="cItem in item.children" v-if='!cItem.hidden')  
           el-menu-item(
             v-if='!cItem.children || cItem.children.length === 0'
             :index="item.path+ '/' + cItem.path"
